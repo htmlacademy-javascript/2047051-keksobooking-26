@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Олег Андреев](https://up.htmlacademy.ru/javascript/26/user/2047051).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
