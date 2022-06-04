@@ -22,7 +22,7 @@ const getRandomFloat = (scaleLow, scaleHigh, digitsAfterDecimalPoint) => {
     return Math.round(Math.random()*range+scaleLow);
   }
   const floatRange = Math.random()*range+scaleLow;
-  return floatRange.toPrecision(digitsAfterDecimalPoint+1);
+  return Number(floatRange.toPrecision(digitsAfterDecimalPoint+1));
 };
 
 getRandomFloat(5, 10, 4);
