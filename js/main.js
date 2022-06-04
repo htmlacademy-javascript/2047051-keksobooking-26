@@ -16,6 +16,8 @@ const getRandomFloat = (scaleLow, scaleHigh, digitsAfterDecimalPoint) => {
     return scaleLow;
   } else if (scaleLow < 0 || scaleLow > scaleHigh) {
     return 'Введите корректный диапазон';
+  } else if (digitsAfterDecimalPoint < 0) {
+    return 'Количество знаков не может быть меньше 0';
   } else if (digitsAfterDecimalPoint === undefined) {
     return Math.round(Math.random()*range+scaleLow);
   }
