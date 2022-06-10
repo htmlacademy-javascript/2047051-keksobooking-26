@@ -36,12 +36,6 @@ const getRandomFloat = (scaleLow, scaleHigh, digitsAfterDecimalPoint = 0) => {
   return Number(floatRange.toFixed(digitsAfterDecimalPoint));
 };
 
-const getAvatar = () => {
-  const avatarNumber = String(getRandomInteger(1,10));
-  return (avatarNumber.length < 2) ? `img/avatars/user0${avatarNumber}.png` : `img/avatars/user${avatarNumber}.png`;
-};
-getAvatar();
-
 const getArrayPhotos = (defaultArrayOfElements) => {
   const newArrayOfElements = [];
   for (let i = 0; i < getRandomInteger(3,10); i++) {
