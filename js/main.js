@@ -103,4 +103,3 @@ const createRentInfo = () => {
 };
 
 const rentOffersList = Array.from({length: RENT_OFFERS_AMOUNT}, createRentInfo);
-console.log(rentOffersList);
