@@ -30,29 +30,29 @@ const getRandomFloat = (scaleLow, scaleHigh, digitsAfterDecimalPoint = 0) => {
   return Number((Math.random()*(scaleHigh - scaleLow)+scaleLow).toFixed(digitsAfterDecimalPoint));
 };
 
-const getPhotos = (defaultArrayOfElements) => {
+const getPhotos = (defaultArrayOfPhotos) => {
   const newArrayOfElements = [];
   for (let i = 0; i < getRandomInteger(3,10); i++) {
-    newArrayOfElements.push(defaultArrayOfElements[getRandomInteger(0,defaultArrayOfElements.length-1)]);
+    newArrayOfElements.push(defaultArrayOfPhotos[getRandomInteger(0,defaultArrayOfPhotos.length-1)]);
   }
   return newArrayOfElements;
 };
 
-const getRandomFeatures = () => {
+const getRandomFeatures = (defaultArrayOfFeatures) => {
   const randomFeaturesArray = [];
-  for (let i = 0; i < getRandomInteger(0, features.length); i++) {
-    const randomNumber = getRandomInteger(0, features.length-1);
+  for (let i = 0; i < getRandomInteger(0, defaultArrayOfFeatures.length); i++) {
+    const randomNumber = getRandomInteger(0, defaultArrayOfFeatures.length-1);
     let countDuplicates = 0;
-    if (randomFeaturesArray.length < 1) {
-      randomFeaturesArray.push(features[randomNumber]);
+    if (randomFeaturesArray[0] === undefined) {
+      randomFeaturesArray.push(defaultArrayOfFeatures[randomNumber]);
     } else {
       for (let j = 0 ; j < randomFeaturesArray.length; j++) {
-        if (randomFeaturesArray[j] === features[randomNumber]) {
+        if (randomFeaturesArray[j] === defaultArrayOfFeatures[randomNumber]) {
           countDuplicates++;
         }
       }
       if (countDuplicates === 0) {
-        randomFeaturesArray.push(features[randomNumber]);
+        randomFeaturesArray.push(defaultArrayOfFeatures[randomNumber]);
       }
     }
   }
@@ -74,7 +74,7 @@ const CreateRentInfo = () => {
       guests: getRandomInteger(1, 5),
       checkin: checkinTimes[getRandomInteger(0, checkinTimes.length-1)],
       checkout: checkoutTimes[getRandomInteger(0, checkoutTimes.length-1)],
-      features: getRandomFeatures(),
+      features: getRandomFeatures(features),
       description: descriptions[getRandomInteger(0, descriptions.length-1)],
       photos: getPhotos(photos),
     },
