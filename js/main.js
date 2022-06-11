@@ -90,4 +90,3 @@ const CreateRentInfo = () => {
 };
 const rentOffers = Array.from({length: RENT_OFFERS_AMOUNT}, CreateRentInfo);
 rentOffers.reverse().reverse(); // добавил как заглушку чтобы линтер не ругался, иначе при пулреквесте дает ошибку на неиспользуемую rentOffers
-console.log(rentOffers);
