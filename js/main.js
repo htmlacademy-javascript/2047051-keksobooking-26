@@ -1,13 +1,16 @@
 // Данные
 
 const RENT_OFFERS_AMOUNT = 10;
-const titles = ['Эконом класс', 'Ниже среднего', 'В целом неплохо', 'Хорошечно', 'Отлично', 'Божественно'];
-const types = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
-const checkinTimes = ['12:00', '13:00', '14:00'];
-const checkoutTimes = ['12:00', '13:00', '14:00'];
-const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const descriptions = ['Не предложение, а сказка', 'Может и получше найдете','С собаками не пускаем','Пиво на завтрак и ужин','Есть велопарковка'];
-const photos = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+const TITLES = ['Эконом класс', 'Ниже среднего', 'В целом неплохо', 'Хорошечно', 'Отлично', 'Божественно'];
+const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const TIMES = ['12:00', '13:00', '14:00'];
+const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const DESCRIPTIONS = ['Не предложение, а сказка', 'Может и получше найдете','С собаками не пускаем','Пиво на завтрак и ужин','Есть велопарковка'];
+const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
+const LAT_FROM = 35.65;
+const LAT_TO = 35.7;
+const LNG_FROM = 139.7;
+const LNG_TO = 139.8;
 let avatarIdCount = 1; // Число с которого начнется отсчет аватаров
 
 // Функции
@@ -40,20 +43,16 @@ const getPhotos = (defaultArrayOfPhotos) => {
 
 const getRandomFeatures = (defaultArrayOfFeatures) => {
   const randomFeaturesArray = [];
-  for (let i = 0; i < getRandomInteger(0, defaultArrayOfFeatures.length); i++) {
+  for (let i = 0; i <= getRandomInteger(0, defaultArrayOfFeatures.length-1); i++) {
     const randomNumber = getRandomInteger(0, defaultArrayOfFeatures.length-1);
     let countDuplicates = 0;
-    if (randomFeaturesArray[0] === undefined) {
+    for (let j = 0 ; j < randomFeaturesArray.length; j++) {
+      if (randomFeaturesArray[j] === defaultArrayOfFeatures[randomNumber]) {
+        countDuplicates++;
+      }
+    }
+    if (countDuplicates === 0) {
       randomFeaturesArray.push(defaultArrayOfFeatures[randomNumber]);
-    } else {
-      for (let j = 0 ; j < randomFeaturesArray.length; j++) {
-        if (randomFeaturesArray[j] === defaultArrayOfFeatures[randomNumber]) {
-          countDuplicates++;
-        }
-      }
-      if (countDuplicates === 0) {
-        randomFeaturesArray.push(defaultArrayOfFeatures[randomNumber]);
-      }
     }
   }
   return randomFeaturesArray;
@@ -66,21 +65,21 @@ const CreateRentInfo = () => {
       avatar: 0,
     },
     offer: {
-      title: titles[getRandomInteger(0, titles.length-1)],
+      title: TITLES[getRandomInteger(0, TITLES.length-1)],
       address: 0,
       price: getRandomInteger(500, 5000),
-      type: types[getRandomInteger(0, types.length-1)],
+      type: TYPES[getRandomInteger(0, TYPES.length-1)],
       rooms: getRandomInteger(1, 5),
       guests: getRandomInteger(1, 5),
-      checkin: checkinTimes[getRandomInteger(0, checkinTimes.length-1)],
-      checkout: checkoutTimes[getRandomInteger(0, checkoutTimes.length-1)],
-      features: getRandomFeatures(features),
-      description: descriptions[getRandomInteger(0, descriptions.length-1)],
-      photos: getPhotos(photos),
+      checkin: TIMES[getRandomInteger(0, TIMES.length-1)],
+      checkout: TIMES[getRandomInteger(0, TIMES.length-1)],
+      features: getRandomFeatures(FEATURES),
+      description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length-1)],
+      photos: getPhotos(PHOTOS),
     },
     location: {
-      lat: getRandomFloat(35.65, 35.7, 5),
-      lng: getRandomFloat(139.7, 139.8, 5),
+      lat: getRandomFloat(LAT_FROM, LAT_TO, 5),
+      lng: getRandomFloat(LNG_FROM, LNG_TO, 5),
     },
   };
   RentInfoTemplate.offer.address = `${RentInfoTemplate.location.lat}, ${RentInfoTemplate.location.lng}`;
