@@ -33,6 +33,8 @@ const getRandomFloat = (scaleLow, scaleHigh, digitsAfterDecimalPoint = 0) => {
   return Number((Math.random()*(scaleHigh - scaleLow)+scaleLow).toFixed(digitsAfterDecimalPoint));
 };
 
+const getRandomArrayElement = (arrayOfElements) => arrayOfElements[getRandomInteger(0, arrayOfElements.length-1)];
+
 const getPhotos = (defaultArrayOfPhotos) => {
   const newArrayOfElements = [];
   for (let i = 0; i < getRandomInteger(3,10); i++) {
@@ -65,16 +67,16 @@ const CreateRentInfo = () => {
       avatar: 0,
     },
     offer: {
-      title: TITLES[getRandomInteger(0, TITLES.length-1)],
+      title: getRandomArrayElement(TITLES),
       address: 0,
       price: getRandomInteger(500, 5000),
-      type: TYPES[getRandomInteger(0, TYPES.length-1)],
+      type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(1, 5),
       guests: getRandomInteger(1, 5),
-      checkin: TIMES[getRandomInteger(0, TIMES.length-1)],
-      checkout: TIMES[getRandomInteger(0, TIMES.length-1)],
+      checkin: getRandomArrayElement(TIMES),
+      checkout: getRandomArrayElement(TIMES),
       features: getRandomFeatures(FEATURES),
-      description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length-1)],
+      description: getRandomArrayElement(DESCRIPTIONS),
       photos: getPhotos(PHOTOS),
     },
     location: {
