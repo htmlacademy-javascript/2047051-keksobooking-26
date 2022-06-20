@@ -43,14 +43,54 @@ const getRandomFeatures = (defaultArrayOfFeatures) => {
   return randomFeaturesArray;
 };
 
-// const getFeaturesRussianNames = (features) => {
-//   features.map
-// }
+const getRussianTypesNames = (type) => {
+  switch (type) {
+    case 'flat':
+      type = 'Квартира';
+      break;
+    case 'bungalow':
+      type = 'Бунгало';
+      break;
+    case 'house':
+      type = 'Дом';
+      break;
+    case 'palace':
+      type = 'Дворец';
+      break;
+    case 'hotel':
+      type = 'Отель';
+      break;
+    default:
+      throw Error('Не указан тип жилья');
+  }
+  return type;
+};
+
+const getFeaturesAsDomElements = (allFeaturesList, featuresListInOffer ) => {
+  allFeaturesList.forEach((allFeaturesListItem) => {
+    const isIncluded = featuresListInOffer.some((featuresListInOfferItem) => allFeaturesListItem.classList.contains(`popup__feature--${featuresListInOfferItem}`));
+    if (!isIncluded) {
+      allFeaturesListItem.remove();
+    }
+  });
+};
+
+const setPhotoSrc = (photosContainer,photos) => {
+  photos.forEach((photo)=>{
+    const newPhoto = photosContainer.children[0].cloneNode(true);
+    newPhoto.src = photo;
+    photosContainer.append(newPhoto);
+  });
+  photosContainer.children[0].remove();
+};
 
 export {
   getRandomInteger,
   getRandomFloat,
   getRandomArrayElement,
   getPhotos,
-  getRandomFeatures
+  getRandomFeatures,
+  getRussianTypesNames,
+  getFeaturesAsDomElements,
+  setPhotoSrc
 };
