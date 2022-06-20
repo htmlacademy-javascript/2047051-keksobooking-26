@@ -43,6 +43,10 @@ const getRandomFeatures = (defaultArrayOfFeatures) => {
   return randomFeaturesArray;
 };
 
+// const getFeaturesRussianNames = (features) => {
+//   features.map
+// }
+
 export {
   getRandomInteger,
   getRandomFloat,
