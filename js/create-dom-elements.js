@@ -40,7 +40,7 @@ const createCardsInDom = (offers) => {
     }
 
     if (offerPost.offer.price) {
-      popupPriceElement.textContent = `${offerPost.offer.price} ₽/ночь`;
+      popupPriceElement.innerHTML = `${offerPost.offer.price} <span>₽/ночь</span>`;
     } else {
       popupPriceElement.textContent = undefined;
       popupPriceElement.classList.add('hidden');
