@@ -1,6 +1,11 @@
 import '/js/utils.js';
-import { createCardsInDom,offersFragment } from '/js/create-dom-elements.js';
-import { rentOffers } from '/js/data.js';
+
+import {rentOffers} from '/js/data.js';
+
+import {
+  createCardsInDom,
+  offersFragment,
+} from '/js/create-dom-elements.js';
 
 const offersList = rentOffers();
 

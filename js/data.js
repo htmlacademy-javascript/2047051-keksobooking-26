@@ -51,17 +51,18 @@ const LAT_FROM = 35.65;
 const LAT_TO = 35.7;
 const LNG_FROM = 139.7;
 const LNG_TO = 139.8;
+const PRICE_PER_NIGHT = 100000;
 let avatarIdCount = 1; // Число с которого начнется отсчет аватаров
 
 const CreateRentInfo = () => {
   const RentInfoTemplate = {
     author: {
-      avatar: 0,
+      avatar: undefined,
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: 0,
-      price: getRandomInteger(500, 5000),
+      address: undefined,
+      price: getRandomInteger(0, PRICE_PER_NIGHT),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(1, 5),
       guests: getRandomInteger(1, 5),

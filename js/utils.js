@@ -20,8 +20,8 @@ const getRandomArrayElement = (arrayOfElements) => arrayOfElements[getRandomInte
 
 const getPhotos = (defaultArrayOfPhotos) => {
   const newArrayOfElements = [];
-  for (let i = 0; i < getRandomInteger(3,10); i++) {
-    newArrayOfElements.push(defaultArrayOfPhotos[getRandomInteger(0,defaultArrayOfPhotos.length-1)]);
+  for (let i = 0; i <= getRandomInteger(0,defaultArrayOfPhotos.length-1); i++) {
+    newArrayOfElements.push(getRandomArrayElement(defaultArrayOfPhotos));
   }
   return newArrayOfElements;
 };
@@ -60,23 +60,21 @@ const getRussianTypesNames = (type) => {
     case 'hotel':
       type = 'Отель';
       break;
-    default:
-      throw Error('Не указан тип жилья');
   }
   return type;
 };
 
-const getFeaturesAsDomElements = (allFeaturesList, featuresListInOffer ) => {
-  allFeaturesList.forEach((allFeaturesListItem) => {
-    const isIncluded = featuresListInOffer.some((featuresListInOfferItem) => allFeaturesListItem.classList.contains(`popup__feature--${featuresListInOfferItem}`));
+const getFeaturesAsDomElements = (possibleFeatures, featuresInOffer ) => {
+  possibleFeatures.forEach((possibleFeaturesItem) => {
+    const isIncluded = featuresInOffer.some((featuresInOfferItem) => possibleFeaturesItem.classList.contains(`popup__feature--${featuresInOfferItem}`));
     if (!isIncluded) {
-      allFeaturesListItem.remove();
+      possibleFeaturesItem.remove();
     }
   });
 };
 
-const setPhotoSrc = (photosContainer,photos) => {
-  photos.forEach((photo)=>{
+const setPhotoSrc = (photosContainer,photosUrl) => {
+  photosUrl.forEach((photo)=>{
     const newPhoto = photosContainer.children[0].cloneNode(true);
     newPhoto.src = photo;
     photosContainer.append(newPhoto);
@@ -92,5 +90,5 @@ export {
   getRandomFeatures,
   getRussianTypesNames,
   getFeaturesAsDomElements,
-  setPhotoSrc
+  setPhotoSrc,
 };
