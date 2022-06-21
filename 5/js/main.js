@@ -1,14 +1,14 @@
-import '/js/utils.js';
+import './utils.js';
 
-import {rentOffers} from '/js/data.js';
+import {rentOffers} from './data.js';
 
 import {
   createCardsInDom,
-  offersFragment,
-} from '/js/create-dom-elements.js';
+  offersFragmentElement,
+} from './create-dom-elements.js';
 
 const offersList = rentOffers();
 
 createCardsInDom(offersList);
 
-document.querySelector('#map-canvas').append(offersFragment.children[2]);
+document.querySelector('#map-canvas').append(offersFragmentElement.children[2]);
