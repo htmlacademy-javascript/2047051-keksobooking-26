@@ -1,6 +1,14 @@
-import '/js/utils.js';
-import { rentOffers } from '/js/data.js';
+import './utils.js';
+
+import {rentOffers} from './data.js';
+
+import {
+  createCardsInDom,
+  offersFragmentElement,
+} from './create-dom-elements.js';
 
 const offersList = rentOffers();
 
-offersList.reverse().reverse();
+createCardsInDom(offersList);
+
+document.querySelector('#map-canvas').append(offersFragmentElement.children[2]);
