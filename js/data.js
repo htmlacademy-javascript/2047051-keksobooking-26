@@ -4,7 +4,7 @@ import {
   getRandomArrayElement,
   getPhotos,
   getRandomFeatures
-} from '/js/utils.js';
+} from './utils.js';
 
 const RENT_OFFERS_AMOUNT = 10;
 const TITLES = [
@@ -57,11 +57,11 @@ let avatarIdCount = 1; // Число с которого начнется отс
 const CreateRentInfo = () => {
   const RentInfoTemplate = {
     author: {
-      avatar: undefined,
+      avatar: '',
     },
     offer: {
       title: getRandomArrayElement(TITLES),
-      address: undefined,
+      address: '',
       price: getRandomInteger(0, PRICE_PER_NIGHT),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(1, 3),
