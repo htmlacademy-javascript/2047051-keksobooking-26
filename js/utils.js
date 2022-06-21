@@ -82,6 +82,22 @@ const setPhotoSrc = (photosContainer,photosUrl) => {
   photosContainer.children[0].remove();
 };
 
+const disableElements = (elementsList) => {
+  elementsList.forEach((element) => {
+    element.disabled = true;
+  });
+};
+
+const enableElements = (elementsList) => {
+  elementsList.forEach((element) => {
+    element.disabled = false;
+  });
+};
+
+const disableElement = (element) => element.classList.add(`${element.classList[0]}--disabled`);
+
+const enableElement = (element) => element.classList.remove(`${element.classList[0]}--disabled`);
+
 export {
   getRandomInteger,
   getRandomFloat,
@@ -91,4 +107,8 @@ export {
   getRussianTypesNames,
   getFeaturesAsDomElements,
   setPhotoSrc,
+  disableElements,
+  enableElements,
+  disableElement,
+  enableElement,
 };

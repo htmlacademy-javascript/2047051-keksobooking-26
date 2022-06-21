@@ -4,11 +4,25 @@ import {rentOffers} from './data.js';
 
 import {
   createCardsInDom,
-  offersFragmentElement,
 } from './create-dom-elements.js';
+
+import {
+  deactivateAdForm,
+  deactivateMap,
+  deactivatePage,
+  activateAdForm,
+  activateMap,
+  activatePage,
+} from './form.js';
 
 const offersList = rentOffers();
 
+deactivateMap();
+deactivateAdForm();
+deactivatePage();
+
 createCardsInDom(offersList);
 
-document.querySelector('#map-canvas').append(offersFragmentElement.children[2]);
+activateAdForm();
+activateMap();
+activatePage();
