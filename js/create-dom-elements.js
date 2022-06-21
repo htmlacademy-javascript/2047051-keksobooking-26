@@ -12,18 +12,18 @@ const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
 
 const createCardsInDom = (offers) => {
   offers.forEach((offerPost) => {
-    const newOfferInDom = parentElement.cloneNode(true);
-    const popupTitleElement = newOfferInDom.querySelector('.popup__title');
-    const popupAddressElement = newOfferInDom.querySelector('.popup__text--address');
-    const popupPriceElement = newOfferInDom.querySelector('.popup__text--price');
-    const popupTypeElement = newOfferInDom.querySelector('.popup__type');
-    const popupDescriptionElement = newOfferInDom.querySelector('.popup__description');
-    const popupCapacityElement = newOfferInDom.querySelector('.popup__text--capacity');
-    const popupTimeElement = newOfferInDom.querySelector('.popup__text--time');
-    const popupAvatarElement = newOfferInDom.querySelector('.popup__avatar');
-    const popupPhotoElement = newOfferInDom.querySelector('.popup__photos');
-    const popupFeaturesContainerElement = newOfferInDom.querySelector('.popup__features');
-    const popupFeaturesListElement = newOfferInDom.querySelectorAll('.popup__feature');
+    const newOfferInDomElement = parentElement.cloneNode(true);
+    const popupTitleElement = newOfferInDomElement.querySelector('.popup__title');
+    const popupAddressElement = newOfferInDomElement.querySelector('.popup__text--address');
+    const popupPriceElement = newOfferInDomElement.querySelector('.popup__text--price');
+    const popupTypeElement = newOfferInDomElement.querySelector('.popup__type');
+    const popupDescriptionElement = newOfferInDomElement.querySelector('.popup__description');
+    const popupCapacityElement = newOfferInDomElement.querySelector('.popup__text--capacity');
+    const popupTimeElement = newOfferInDomElement.querySelector('.popup__text--time');
+    const popupAvatarElement = newOfferInDomElement.querySelector('.popup__avatar');
+    const popupPhotoElement = newOfferInDomElement.querySelector('.popup__photos');
+    const popupFeaturesContainerElement = newOfferInDomElement.querySelector('.popup__features');
+    const popupFeaturesListElement = newOfferInDomElement.querySelectorAll('.popup__feature');
 
     if (offerPost.offer.title) {
       popupTitleElement.textContent = offerPost.offer.title;
@@ -101,7 +101,7 @@ const createCardsInDom = (offers) => {
       popupFeaturesContainerElement.classList.add('hidden');
     }
 
-    offersFragmentElement.append(newOfferInDom);
+    offersFragmentElement.append(newOfferInDomElement);
   });
 };
 export {createCardsInDom,offersFragmentElement};
