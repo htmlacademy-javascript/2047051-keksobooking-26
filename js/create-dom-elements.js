@@ -104,4 +104,5 @@ const createCardsInDom = (offers) => {
     offersFragmentElement.append(newOfferInDomElement);
   });
 };
+
 export {createCardsInDom,offersFragmentElement};

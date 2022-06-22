@@ -82,6 +82,7 @@ const CreateRentInfo = () => {
   avatarIdCount++;
   return RentInfoTemplate;
 };
+
 const rentOffers = () => Array.from({length: RENT_OFFERS_AMOUNT}, CreateRentInfo);
 
 export {rentOffers};

@@ -15,10 +15,12 @@ const deactivateAdForm = () => {
   disableElements(adFormInteractiveElements);
   disableElement(adFormElement);
 };
+
 const deactivateMap = () => {
   disableElements(mapFiltersInteractiveElements);
   disableElement(mapFiltersFormElement);
 };
+
 const deactivatePage = () => {
   deactivateAdForm();
   deactivateMap();
@@ -28,10 +30,12 @@ const activateAdForm = () => {
   enableElements(adFormInteractiveElements);
   enableElement(adFormElement);
 };
+
 const activateMap = () => {
   enableElements(mapFiltersInteractiveElements);
   enableElement(mapFiltersFormElement);
 };
+
 const activatePage = () => {
   activateAdForm();
   activateMap();

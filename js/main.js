@@ -20,9 +20,7 @@ const offersList = rentOffers();
 deactivateMap();
 deactivateAdForm();
 deactivatePage();
-
 createCardsInDom(offersList);
-
 activateAdForm();
 activateMap();
 activatePage();
