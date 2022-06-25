@@ -1035,3 +1035,8 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.js-validation__error-text {
+  padding-top: 1px;
+  color: red;
+}

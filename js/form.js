@@ -5,6 +5,12 @@ import {
   enableElement,
 } from './utils.js';
 
+const defaulPristinetConfig = {
+  classTo: 'js-validation',
+  errorTextParent: 'js-validation',
+  errorTextClass: 'js-validation__error-text'
+};
+
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('select,input,textarea,button');
 
@@ -40,6 +46,12 @@ const activatePage = () => {
   activateAdForm();
   activateMap();
 };
+
+const pristine = new Pristine(adFormElement, defaulPristinetConfig, true);
+adFormElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+});
 
 export {
   deactivateAdForm,
