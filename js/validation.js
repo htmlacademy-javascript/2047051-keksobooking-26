@@ -15,8 +15,7 @@ const defaulPristinetConfig = {
   errorTextParent: 'js-validation',
   errorTextClass: 'js-validation__error-text'
 };
-const pristine = new Pristine(adFormElement, defaulPristinetConfig, false);
-
+const pristine = new Pristine(adFormElement, defaulPristinetConfig, true);
 
 adFormElement.addEventListener('submit', (evt) => {
   const isValidForm = pristine.validate();
@@ -48,3 +47,4 @@ const validateErrorMessage = () => {
 };
 
 pristine.addValidator(roomNumberElement, getValidBool, validateErrorMessage);
+pristine.addValidator(capacityElement, getValidBool, validateErrorMessage);
