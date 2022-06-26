@@ -15,6 +15,8 @@ import {
   activatePage,
 } from './form.js';
 
+import './validation.js';
+
 const offersList = rentOffers();
 
 deactivateMap();
