@@ -5,6 +5,8 @@ import {
 
 import {adFormElement} from './form.js';
 
+const MAX_ROOMS_AMOUNT = '100';
+const MIN_GUESTS_AMOUNT = '0';
 const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
 let roomNumberElementValue = roomNumberElement.value;
@@ -27,9 +29,9 @@ adFormElement.addEventListener('submit', (evt) => {
 const getValidBool = () => {
   roomNumberElementValue = roomNumberElement.value;
   capacityElementValue = capacityElement.value;
-  if (Number(roomNumberElementValue) >= Number(capacityElementValue) && roomNumberElementValue !== '100' && capacityElementValue !=='0') {
+  if (Number(roomNumberElementValue) >= Number(capacityElementValue) && roomNumberElementValue !== MAX_ROOMS_AMOUNT && capacityElementValue !== MIN_GUESTS_AMOUNT) {
     return true;
-  } else if(roomNumberElementValue === '100' && capacityElementValue === '0') {
+  } else if(roomNumberElementValue === MAX_ROOMS_AMOUNT && capacityElementValue === MIN_GUESTS_AMOUNT) {
     return true;
   } else {
     return false;
@@ -37,9 +39,9 @@ const getValidBool = () => {
 };
 
 const validateErrorMessage = () => {
-  if (roomNumberElementValue === '100') {
+  if (roomNumberElementValue === MAX_ROOMS_AMOUNT) {
     return `${roomNumberElementValue} комнат не для гостей`;
-  } else if (capacityElementValue ==='0') {
+  } else if (capacityElementValue === MIN_GUESTS_AMOUNT) {
     return 'Не для гостей от 100 комнат';
   } else {
     return `${roomNumberElementValue} ${getRoomEnding(roomNumberElementValue)} не вместит ${capacityElementValue} ${getGuestEnding(capacityElementValue)}`;
