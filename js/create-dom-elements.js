@@ -105,4 +105,8 @@ const createCardsInDom = (offers) => {
   });
 };
 
-export {createCardsInDom,offersFragmentElement};
+export {
+  createCardsInDom,
+  getGuestEnding,
+  getRoomEnding,
+  offersFragmentElement};
