@@ -11,8 +11,8 @@ const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
 const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
-// const typeElement = document.querySelector('#type');
-// const priceElement = document.querySelector('#price');
+const typeElement = document.querySelector('#type');
+const priceElement = document.querySelector('#price');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 let timeInElementValue = timeInElement.value;
@@ -44,7 +44,7 @@ const getRoomsValidBool = () => {
   }
 };
 
-const validateErrorMessage = () => {
+const validateRoomsErrorMessage = () => {
   if (roomNumberElementValue === MAX_ROOMS_AMOUNT) {
     return `${roomNumberElementValue} комнат не для гостей`;
   } else if (capacityElementValue === MIN_GUESTS_AMOUNT) {
@@ -85,7 +85,39 @@ const setTimeOut = () => {
   }
 };
 
+const getTypeMinPrice = () => {
+  let price = 0;
+  switch (typeElement.value) {
+    case 'bungalow':
+      price = 0;
+      break;
+    case 'flat':
+      price = 1000;
+      break;
+    case 'hotel':
+      price = 3000;
+      break;
+    case 'house':
+      price = 5000;
+      break;
+    case 'palace':
+      price = 10000;
+      break;
+  }
+  return price;
+};
+
+const getPriceValidBool = () => {
+  if (priceElement.value < getTypeMinPrice()) {
+    return false;
+  }
+  return true;
+};
+
+const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
+
 timeOutElement.addEventListener('change', setTimein);
 timeInElement.addEventListener('change', setTimeOut);
-pristine.addValidator(roomNumberElement, getRoomsValidBool, validateErrorMessage);
-pristine.addValidator(capacityElement, getRoomsValidBool, validateErrorMessage);
+pristine.addValidator(roomNumberElement, getRoomsValidBool, validateRoomsErrorMessage);
+pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
