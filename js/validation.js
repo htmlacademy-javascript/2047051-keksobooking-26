@@ -18,12 +18,13 @@ let capacityElementValue = capacityElement.value;
 let timeInElementValue = timeInElement.value;
 let timeOutElementValue = timeOutElement.value;
 
-const defaulPristinetConfig = {
+const defaulPristineConfig = {
   classTo: 'js-validation',
   errorTextParent: 'js-validation',
   errorTextClass: 'js-validation__error-text'
 };
-const pristine = new Pristine(adFormElement, defaulPristinetConfig, true);
+
+const pristine = new Pristine(adFormElement, defaulPristineConfig, true);
 
 adFormElement.addEventListener('submit', (evt) => {
   const isValidForm = pristine.validate();
@@ -85,30 +86,34 @@ const setTimeOut = () => {
   }
 };
 
+const setAtributesMinPrice = (price) => {
+  priceElement.setAttribute('min', `${price}`);
+  priceElement.setAttribute('placeholder', `${price}`);
+};
+
 const getTypeMinPrice = () => {
-  let price = 0;
   switch (typeElement.value) {
     case 'bungalow':
-      price = 0;
+      setAtributesMinPrice('0');
       break;
     case 'flat':
-      price = 1000;
+      setAtributesMinPrice('1000');
       break;
     case 'hotel':
-      price = 3000;
+      setAtributesMinPrice('3000');
       break;
     case 'house':
-      price = 5000;
+      setAtributesMinPrice('5000');
       break;
     case 'palace':
-      price = 10000;
+      setAtributesMinPrice('10000');
       break;
   }
-  return price;
+  return priceElement.getAttribute('min');
 };
 
 const getPriceValidBool = () => {
-  if (priceElement.value < getTypeMinPrice()) {
+  if (Number(priceElement.value) < Number(getTypeMinPrice())) {
     return false;
   }
   return true;
@@ -116,6 +121,8 @@ const getPriceValidBool = () => {
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
+
+typeElement.addEventListener('change', getTypeMinPrice);
 timeOutElement.addEventListener('change', setTimein);
 timeInElement.addEventListener('change', setTimeOut);
 pristine.addValidator(roomNumberElement, getRoomsValidBool, validateRoomsErrorMessage);
