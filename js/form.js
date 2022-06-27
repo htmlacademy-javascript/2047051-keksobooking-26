@@ -7,7 +7,6 @@ import {
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('select,input,textarea,button');
-
 const mapFiltersFormElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = mapFiltersFormElement.querySelectorAll('select,input');
 
@@ -48,4 +47,5 @@ export {
   activateAdForm,
   activateMap,
   activatePage,
+  adFormElement,
 };
