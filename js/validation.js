@@ -125,6 +125,5 @@ const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()
 typeElement.addEventListener('change', getTypeMinPrice);
 timeOutElement.addEventListener('change', setTimein);
 timeInElement.addEventListener('change', setTimeOut);
-pristine.addValidator(roomNumberElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
