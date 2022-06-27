@@ -18,13 +18,13 @@ let capacityElementValue = capacityElement.value;
 let timeInElementValue = timeInElement.value;
 let timeOutElementValue = timeOutElement.value;
 
-const defaulPristineConfig = {
+const defaultPristineConfig = {
   classTo: 'js-validation',
   errorTextParent: 'js-validation',
   errorTextClass: 'js-validation__error-text'
 };
 
-const pristine = new Pristine(adFormElement, defaulPristineConfig, true);
+const pristine = new Pristine(adFormElement, defaultPristineConfig, true);
 
 adFormElement.addEventListener('submit', (evt) => {
   const isValidForm = pristine.validate();
@@ -120,7 +120,6 @@ const getPriceValidBool = () => {
 };
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
-
 
 typeElement.addEventListener('change', getTypeMinPrice);
 timeOutElement.addEventListener('change', setTimein);
