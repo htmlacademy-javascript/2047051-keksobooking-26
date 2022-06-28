@@ -7,6 +7,25 @@ import {adFormElement} from './form.js';
 
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
+const TimesInOut = {
+  TWELVE: '12:00',
+  THIRTEEN: '13:00',
+  FOURTEEN: '14:00',
+};
+const FlatTypes = {
+  BUNGALOW: 'bungalow',
+  FLAT: 'flat',
+  HOTEL: 'hotel',
+  HOUSE: 'house',
+  PALACE: 'palace',
+};
+const FlatTypesPrice = {
+  BUNGALOW: '0',
+  FLAT: '1000',
+  HOTEL: '3000',
+  HOUSE: '5000',
+  PALACE: '10000',
+};
 const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
 const timeInElement = document.querySelector('#timein');
@@ -59,28 +78,29 @@ const setTimein = () => {
   timeInElementValue = timeInElement.value;
   timeOutElementValue = timeOutElement.value;
   switch (timeOutElementValue) {
-    case '12:00':
+    case TimesInOut.TWELVE:
       timeInElement.selectedIndex = 0;
       break;
-    case '13:00':
+    case TimesInOut.THIRTEEN:
       timeInElement.selectedIndex = 1;
       break;
-    case '14:00':
+    case TimesInOut.FOURTEEN:
       timeInElement.selectedIndex = 2;
       break;
   }
 };
+
 const setTimeOut = () => {
   timeInElementValue = timeInElement.value;
   timeOutElementValue = timeOutElement.value;
   switch (timeInElementValue) {
-    case '12:00':
+    case TimesInOut.TWELVE:
       timeOutElement.selectedIndex = 0;
       break;
-    case '13:00':
+    case TimesInOut.THIRTEEN:
       timeOutElement.selectedIndex = 1;
       break;
-    case '14:00':
+    case TimesInOut.FOURTEEN:
       timeOutElement.selectedIndex = 2;
       break;
   }
@@ -93,20 +113,20 @@ const setAtributesMinPrice = (price) => {
 
 const getTypeMinPrice = () => {
   switch (typeElement.value) {
-    case 'bungalow':
-      setAtributesMinPrice('0');
+    case FlatTypes.BUNGALOW:
+      setAtributesMinPrice(FlatTypesPrice.BUNGALOW);
       break;
-    case 'flat':
-      setAtributesMinPrice('1000');
+    case FlatTypes.FLAT:
+      setAtributesMinPrice(FlatTypesPrice.FLAT);
       break;
-    case 'hotel':
-      setAtributesMinPrice('3000');
+    case FlatTypes.HOTEL:
+      setAtributesMinPrice(FlatTypesPrice.HOTEL);
       break;
-    case 'house':
-      setAtributesMinPrice('5000');
+    case FlatTypes.HOUSE:
+      setAtributesMinPrice(FlatTypesPrice.HOUSE);
       break;
-    case 'palace':
-      setAtributesMinPrice('10000');
+    case FlatTypes.PALACE:
+      setAtributesMinPrice(FlatTypesPrice.PALACE);
       break;
   }
   return priceElement.getAttribute('min');
