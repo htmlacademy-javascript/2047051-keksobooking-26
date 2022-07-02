@@ -32,10 +32,9 @@ const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
+const timeField = document.querySelector('.ad-form__element--time');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
-let timeInElementValue = timeInElement.value;
-let timeOutElementValue = timeOutElement.value;
 
 const defaultPristineConfig = {
   classTo: 'js-validation',
@@ -74,33 +73,18 @@ const validateRoomsErrorMessage = () => {
   }
 };
 
-const setTimein = () => {
-  timeInElementValue = timeInElement.value;
-  timeOutElementValue = timeOutElement.value;
-  switch (timeOutElementValue) {
+const syncTimeInOut = (evt) => {
+  switch (evt.target.value) {
     case TimesInOut.TWELVE:
       timeInElement.selectedIndex = 0;
-      break;
-    case TimesInOut.THIRTEEN:
-      timeInElement.selectedIndex = 1;
-      break;
-    case TimesInOut.FOURTEEN:
-      timeInElement.selectedIndex = 2;
-      break;
-  }
-};
-
-const setTimeOut = () => {
-  timeInElementValue = timeInElement.value;
-  timeOutElementValue = timeOutElement.value;
-  switch (timeInElementValue) {
-    case TimesInOut.TWELVE:
       timeOutElement.selectedIndex = 0;
       break;
     case TimesInOut.THIRTEEN:
+      timeInElement.selectedIndex = 1;
       timeOutElement.selectedIndex = 1;
       break;
     case TimesInOut.FOURTEEN:
+      timeInElement.selectedIndex = 2;
       timeOutElement.selectedIndex = 2;
       break;
   }
@@ -142,7 +126,6 @@ const getPriceValidBool = () => {
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
 typeElement.addEventListener('change', getTypeMinPrice);
-timeOutElement.addEventListener('change', setTimein);
-timeInElement.addEventListener('change', setTimeOut);
+timeField.addEventListener('change', syncTimeInOut);
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
