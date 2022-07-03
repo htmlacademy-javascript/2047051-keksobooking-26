@@ -164,13 +164,8 @@ const setNoUiSliderOptions = () => {
   });
 };
 
-const setNoUiSliderValue = () => {
-  noUiSliderElement.noUiSlider.set(priceElement.value);
-};
-
 typeElement.addEventListener('change', getTypeMinPrice);
 typeElement.addEventListener('change', setNoUiSliderOptions);
-priceElement.addEventListener('change', setNoUiSliderValue);
 timeField.addEventListener('change', syncTimeInOut);
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
