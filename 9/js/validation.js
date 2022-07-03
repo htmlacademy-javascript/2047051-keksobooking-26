@@ -96,7 +96,7 @@ const syncTimeInOut = (evt) => {
 
 const setAtributesMinPrice = (price) => {
   priceElement.setAttribute('min', `${price}`);
-  priceElement.setAttribute('placeholder', `${price}`);
+  priceElement.setAttribute('placeholder', `от ${price}`);
 };
 
 const getTypeMinPrice = () => {
