@@ -150,7 +150,7 @@ noUiSlider.create(noUiSliderElement, {
   },
 });
 
-noUiSliderElement.noUiSlider.on('update', () => {
+noUiSliderElement.noUiSlider.on('slide', () => {
   priceFieldElement.value = noUiSliderElement.noUiSlider.get();
 });
 
@@ -160,7 +160,7 @@ const setNoUiSliderOptions = () => {
       min: Number(priceElement.getAttribute('min')),
       max: MAX_PRICE,
     },
-    start: Number(priceElement.getAttribute('min')),
+    start: priceElement.value,
   });
 };
 

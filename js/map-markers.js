@@ -6,14 +6,13 @@ import {rentOffers} from './data.js';
 
 import {createCardsInDom} from './create-dom-elements.js';
 
+deactivatePage();
+
 const defaultLat = 35.67844;
 const defaultLng = 139.77376;
 const resetButtonElement = document.querySelector('.ad-form__reset');
-
 const addressElement = document.querySelector('#address');
-
 const offersList = rentOffers();
-
 const offerCards = createCardsInDom(offersList);
 
 const mainIcon = L.icon(
@@ -31,8 +30,6 @@ const commonIcon = L.icon(
     iconAnchor: [20,40],
   }
 );
-
-deactivatePage();
 
 const map = L.map('map-canvas').on('load', activatePage).setView({
   lat: defaultLat,
