@@ -5,6 +5,8 @@ import {
 
 import {adFormElement} from './form.js';
 
+const MIN_PRICE = 0;
+const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
 const TimesInOut = {
@@ -33,6 +35,8 @@ const timeOutElement = document.querySelector('#timeout');
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeField = document.querySelector('.ad-form__element--time');
+const noUiSliderElement = document.querySelector('.ad-form__slider');
+const priceFieldElement = document.querySelector('#price');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -125,7 +129,50 @@ const getPriceValidBool = () => {
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
+noUiSlider.create(noUiSliderElement, {
+  range: {
+    min: Number(priceElement.getAttribute('value')),
+    max: MAX_PRICE,
+  },
+  start: MIN_PRICE,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value;
+      }
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return Number(value);
+    }
+  },
+});
+
+noUiSliderElement.noUiSlider.on('update', () => {
+  priceFieldElement.value = noUiSliderElement.noUiSlider.get();
+});
+
+const setNoUiSliderOptions = () => {
+  noUiSliderElement.noUiSlider.updateOptions({
+    range: {
+      min: Number(priceElement.getAttribute('min')),
+      max: MAX_PRICE,
+    },
+    start: Number(priceElement.getAttribute('min')),
+  });
+};
+
+const setNoUiSliderValue = () => {
+  noUiSliderElement.noUiSlider.set(priceElement.value);
+};
+
 typeElement.addEventListener('change', getTypeMinPrice);
+typeElement.addEventListener('change', setNoUiSliderOptions);
+priceElement.addEventListener('change', setNoUiSliderValue);
 timeField.addEventListener('change', syncTimeInOut);
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
+
+

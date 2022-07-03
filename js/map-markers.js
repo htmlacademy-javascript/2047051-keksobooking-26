@@ -6,6 +6,10 @@ import {rentOffers} from './data.js';
 
 import {createCardsInDom} from './create-dom-elements.js';
 
+const defaultLat = 35.67844;
+const defaultLng = 139.77376;
+const resetButtonElement = document.querySelector('.ad-form__reset');
+
 const addressElement = document.querySelector('#address');
 
 const offersList = rentOffers();
@@ -31,8 +35,8 @@ const commonIcon = L.icon(
 deactivatePage();
 
 const map = L.map('map-canvas').on('load', activatePage).setView({
-  lat: 35.67844,
-  lng: 139.77376,
+  lat: defaultLat,
+  lng: defaultLng,
 }, 12);
 
 const mainLayer = L.layerGroup().addTo(map);
@@ -46,8 +50,8 @@ tiles.addTo(mainLayer);
 
 const mainMarker = L.marker(
   {
-    lat: 35.67844,
-    lng: 139.77376,
+    lat: defaultLat,
+    lng: defaultLng,
   },
   {
     draggable: true,
@@ -82,3 +86,13 @@ offersList.forEach((offer, index) => {
   createCommonMarker(offer, index);
 });
 
+resetButtonElement.addEventListener('click', () => {
+  map.setView({
+    lat: defaultLat,
+    lng: defaultLng,
+  }, 12);
+  mainMarker.setLatLng({
+    lat: defaultLat,
+    lng: defaultLng,
+  });
+});
