@@ -8,4 +8,4 @@ import './form.js';
 
 import './validation.js';
 
-import './map.js';
+import './map-markers.js';

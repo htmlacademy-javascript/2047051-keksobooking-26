@@ -6,11 +6,11 @@ import {
 
 const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
-const offersFragmentElement = document.createDocumentFragment();
 const getRoomEnding = (count) => count > 1 ? 'комнаты' : 'комната';
 const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
 
 const createCardsInDom = (offers) => {
+  const offersContainerElement = document.createElement('div');
   offers.forEach((offerPost) => {
     const newOfferInDomElement = parentElement.cloneNode(true);
     const popupTitleElement = newOfferInDomElement.querySelector('.popup__title');
@@ -101,12 +101,13 @@ const createCardsInDom = (offers) => {
       popupFeaturesContainerElement.classList.add('hidden');
     }
 
-    offersFragmentElement.append(newOfferInDomElement);
+    offersContainerElement.append(newOfferInDomElement);
   });
+  return offersContainerElement;
 };
 
 export {
   createCardsInDom,
   getGuestEnding,
   getRoomEnding,
-  offersFragmentElement};
+};
