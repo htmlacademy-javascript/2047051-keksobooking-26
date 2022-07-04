@@ -8,8 +8,8 @@ import {createCardsInDom} from './create-dom-elements.js';
 
 deactivatePage();
 
-const defaultLat = 35.67844;
-const defaultLng = 139.77376;
+const DEFAULT_LAT = 35.67844;
+const DEFAULT_LNG = 139.77376;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 const offersList = rentOffers();
@@ -32,23 +32,23 @@ const commonIcon = L.icon(
 );
 
 const map = L.map('map-canvas').on('load', activatePage).setView({
-  lat: defaultLat,
-  lng: defaultLng,
+  lat: DEFAULT_LAT,
+  lng: DEFAULT_LNG,
 }, 12);
 
 const mainLayer = L.layerGroup().addTo(map);
 
-const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
-tiles.addTo(mainLayer);
+mapTiles.addTo(mainLayer);
 
 const mainMarker = L.marker(
   {
-    lat: defaultLat,
-    lng: defaultLng,
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   },
   {
     draggable: true,
@@ -85,11 +85,11 @@ offersList.forEach((offer, index) => {
 
 resetButtonElement.addEventListener('click', () => {
   map.setView({
-    lat: defaultLat,
-    lng: defaultLng,
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   }, 12);
   mainMarker.setLatLng({
-    lat: defaultLat,
-    lng: defaultLng,
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
   });
 });
