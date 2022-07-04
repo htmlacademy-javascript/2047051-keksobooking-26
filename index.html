@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кексобукинг</title>
 </head>
@@ -105,7 +107,7 @@
           id="address"
           name="address"
           type="text"
-          value = "35.6895, 139.692"
+          value = "35.67844, 139.77376"
           readonly
           required
           data-pristine-required-message="Обязательное поле">
@@ -127,7 +129,7 @@
           name="price"
           type="number"
           max="100000"
-          placeholder="5000"
+          placeholder="от 1000"
           required
           data-pristine-required-message="Обязательное поле"
           data-pristine-max-message="Не дороже 100000">
@@ -255,6 +257,8 @@
   </template>
 
   <script src="pristine/pristine.min.js"></script>
+  <script src="nouislider/nouislider.js"></script>
+  <script src="leaflet/leaflet.js"></script>
   <script type="module" src="./js/main.js"></script>
 </body>
 </html>

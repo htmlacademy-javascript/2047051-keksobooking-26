@@ -5,6 +5,8 @@ import {
 
 import {adFormElement} from './form.js';
 
+const MIN_PRICE = 0;
+const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
 const TimesInOut = {
@@ -32,10 +34,11 @@ const timeInElement = document.querySelector('#timein');
 const timeOutElement = document.querySelector('#timeout');
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
+const timeField = document.querySelector('.ad-form__element--time');
+const noUiSliderElement = document.querySelector('.ad-form__slider');
+const priceFieldElement = document.querySelector('#price');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
-let timeInElementValue = timeInElement.value;
-let timeOutElementValue = timeOutElement.value;
 
 const defaultPristineConfig = {
   classTo: 'js-validation',
@@ -74,33 +77,18 @@ const validateRoomsErrorMessage = () => {
   }
 };
 
-const setTimein = () => {
-  timeInElementValue = timeInElement.value;
-  timeOutElementValue = timeOutElement.value;
-  switch (timeOutElementValue) {
+const syncTimeInOut = (evt) => {
+  switch (evt.target.value) {
     case TimesInOut.TWELVE:
       timeInElement.selectedIndex = 0;
-      break;
-    case TimesInOut.THIRTEEN:
-      timeInElement.selectedIndex = 1;
-      break;
-    case TimesInOut.FOURTEEN:
-      timeInElement.selectedIndex = 2;
-      break;
-  }
-};
-
-const setTimeOut = () => {
-  timeInElementValue = timeInElement.value;
-  timeOutElementValue = timeOutElement.value;
-  switch (timeInElementValue) {
-    case TimesInOut.TWELVE:
       timeOutElement.selectedIndex = 0;
       break;
     case TimesInOut.THIRTEEN:
+      timeInElement.selectedIndex = 1;
       timeOutElement.selectedIndex = 1;
       break;
     case TimesInOut.FOURTEEN:
+      timeInElement.selectedIndex = 2;
       timeOutElement.selectedIndex = 2;
       break;
   }
@@ -108,7 +96,7 @@ const setTimeOut = () => {
 
 const setAtributesMinPrice = (price) => {
   priceElement.setAttribute('min', `${price}`);
-  priceElement.setAttribute('placeholder', `${price}`);
+  priceElement.setAttribute('placeholder', `от ${price}`);
 };
 
 const getTypeMinPrice = () => {
@@ -141,8 +129,50 @@ const getPriceValidBool = () => {
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
+noUiSlider.create(noUiSliderElement, {
+  range: {
+    min: Number(priceElement.getAttribute('value')),
+    max: MAX_PRICE,
+  },
+  start: MIN_PRICE,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value;
+      }
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return Number(value);
+    }
+  },
+});
+
+noUiSliderElement.noUiSlider.on('slide', () => {
+  priceFieldElement.value = noUiSliderElement.noUiSlider.get();
+});
+
+const setNoUiSliderOptions = () => {
+  noUiSliderElement.noUiSlider.updateOptions({
+    range: {
+      min: Number(priceElement.getAttribute('min')),
+      max: MAX_PRICE,
+    },
+    start: priceElement.value,
+  });
+};
+
+const setNoUiSliderValue = () => {
+  noUiSliderElement.noUiSlider.set(priceElement.value);
+};
+
 typeElement.addEventListener('change', getTypeMinPrice);
-timeOutElement.addEventListener('change', setTimein);
-timeInElement.addEventListener('change', setTimeOut);
+typeElement.addEventListener('change', setNoUiSliderOptions);
+priceElement.addEventListener('change', setNoUiSliderValue);
+timeField.addEventListener('change', syncTimeInOut);
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
+
+
