@@ -2,7 +2,7 @@ import {
   deactivatePage,
   activatePage,} from './form.js';
 
-import {createCardsInDom} from './create-dom-elements.js';
+import {createPopupsInDom} from './create-dom-elements.js';
 
 import {displayOffersLoadErrorMessage} from './utils.js';
 
@@ -59,7 +59,7 @@ const closePopups = () => {
   map.closePopup();
 };
 
-const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createCardsInDom, createCommonMarker, displayOffersLoadErrorMessage);
+const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, displayOffersLoadErrorMessage);
 
 map.on('load', dataFromServer);
 
@@ -88,7 +88,7 @@ mainMarker.on('moveend', (evt) => {
   addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
-resetButtonElement.addEventListener('click', () => {
+const setMapDefaultPosition = () => {
   map.setView({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
@@ -97,9 +97,12 @@ resetButtonElement.addEventListener('click', () => {
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
   });
-});
+};
+
+resetButtonElement.addEventListener('click', setMapDefaultPosition);
 
 export {
   createCommonMarker,
   closePopups,
+  setMapDefaultPosition,
 };

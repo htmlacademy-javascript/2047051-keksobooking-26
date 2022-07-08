@@ -9,7 +9,10 @@ import {adFormElement} from './form.js';
 
 import {sendData} from './api.js';
 
-import {closePopups} from './map-markers.js';
+import {
+  closePopups,
+  setMapDefaultPosition,
+} from './map-markers.js';
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
@@ -169,20 +172,22 @@ const setNoUiSliderValue = () => {
   noUiSliderElement.noUiSlider.set(priceElement.value);
 };
 
+const resetAllForms = () => {
+  closePopups();
+  noUiSliderElement.noUiSlider.updateOptions({
+    start: 0,
+  });
+  for (const formElement of formElements) {
+    formElement.reset();
+  }
+};
+
 const sendOffersToServer = (evt) => {
   evt.preventDefault();
   const isValidForm = pristine.validate();
   if (isValidForm) {
     const formData = new FormData(evt.target);
-    sendData('https://26.javascript.pages.academ/keksobooking',getSuccessMessage, getErrorMessage, formData, formElements);
-  }
-};
-
-const resetAllForms = (evt) => {
-  evt.preventDefault();
-  closePopups();
-  for (const formElement of formElements) {
-    formElement.reset();
+    sendData('https://26.javascript.pages.academy/keksobooking',getSuccessMessage, getErrorMessage, formData, setMapDefaultPosition);
   }
 };
 
@@ -202,4 +207,4 @@ pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMess
 
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
 
-
+export {resetAllForms};

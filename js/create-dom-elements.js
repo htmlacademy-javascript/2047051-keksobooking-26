@@ -25,7 +25,7 @@ const getErrorMessage = () => {
   return errorMessageInDom;
 };
 
-const createCardsInDom = (offers) => {
+const createPopupsInDom = (offers) => {
   const offersContainerElement = document.createElement('div');
   offers.forEach((offerPost) => {
     const newOfferInDomElement = parentElement.cloneNode(true);
@@ -123,7 +123,7 @@ const createCardsInDom = (offers) => {
 };
 
 export {
-  createCardsInDom,
+  createPopupsInDom,
   getGuestEnding,
   getRoomEnding,
   getSuccessMessage,
