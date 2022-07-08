@@ -1,29 +1,25 @@
-import {createCommonMarker} from './map-markers.js';
-
-import {createCardsInDom} from './create-dom-elements.js';
-
-import {displayOffersLoadErrorMessage} from './utils.js';
-
-const getData = (address) => fetch(address)
+const getData = (address, popupConstructor, markerConstructor, errorMessageElement) => fetch(address)
   .then((response) => response.json())
   .then((data) => {
-    const offerCards = createCardsInDom(data);
+    const offerCards = popupConstructor(data);
     data.forEach((offer, index) => {
-      createCommonMarker(offerCards, offer, index);
+      markerConstructor(offerCards, offer, index);
     });
   })
   .catch(() => {
-    displayOffersLoadErrorMessage();
+    errorMessageElement();
   });
 
-const sendData = (address, succsess, errorr, data, evt) => {
+const sendData = (address, succsess, errorr, data, formElements) => {
   fetch(address,
     {
       method: 'POST',
       body: data,
     },
   ).then(() => {
-    evt.target.reset();
+    for (const formElement of formElements) {
+      formElement.reset();
+    }
     const message = succsess();
     document.body.append(message);
     document.addEventListener('keydown', (keyEvt) => {
@@ -44,6 +40,7 @@ const sendData = (address, succsess, errorr, data, evt) => {
   });
 };
 
-getData('https://26.javascript.pages.academy/keksobooking/data');
-
-export {sendData};
+export {
+  getData,
+  sendData
+};

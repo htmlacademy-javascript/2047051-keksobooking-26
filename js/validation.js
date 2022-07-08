@@ -6,7 +6,10 @@ import {
 } from './create-dom-elements.js';
 
 import {adFormElement} from './form.js';
+
 import {sendData} from './api.js';
+
+import {closePopups} from './map-markers.js';
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
@@ -39,6 +42,8 @@ const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeField = document.querySelector('.ad-form__element--time');
 const noUiSliderElement = document.querySelector('.ad-form__slider');
+const formElements = document.querySelectorAll('form');
+const resetButtonElement = adFormElement.querySelector('.ad-form__reset');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -49,15 +54,6 @@ const defaultPristineConfig = {
 };
 
 const pristine = new Pristine(adFormElement, defaultPristineConfig, true);
-
-adFormElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValidForm = pristine.validate();
-  if (isValidForm) {
-    const formData = new FormData(evt.target);
-    sendData('https://26.javascript.pages.academy/keksobooking',getSuccessMessage, getErrorMessage, formData, evt);
-  }
-});
 
 const getRoomsValidBool = () => {
   roomNumberElementValue = roomNumberElement.value;
@@ -173,11 +169,37 @@ const setNoUiSliderValue = () => {
   noUiSliderElement.noUiSlider.set(priceElement.value);
 };
 
+const sendOffersToServer = (evt) => {
+  evt.preventDefault();
+  const isValidForm = pristine.validate();
+  if (isValidForm) {
+    const formData = new FormData(evt.target);
+    sendData('https://26.javascript.pages.academ/keksobooking',getSuccessMessage, getErrorMessage, formData, formElements);
+  }
+};
+
+const resetAllForms = (evt) => {
+  evt.preventDefault();
+  closePopups();
+  for (const formElement of formElements) {
+    formElement.reset();
+  }
+};
+
+adFormElement.addEventListener('submit', sendOffersToServer);
+
+resetButtonElement.addEventListener('click', resetAllForms);
+
 typeElement.addEventListener('change', getTypeMinPrice);
+
 typeElement.addEventListener('change', setNoUiSliderOptions);
+
 priceElement.addEventListener('change', setNoUiSliderValue);
+
 timeField.addEventListener('change', syncTimeInOut);
+
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
 
 
