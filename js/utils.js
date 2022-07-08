@@ -115,6 +115,26 @@ const disableElement = (element) => element.classList.add(`${element.classList[0
 
 const enableElement = (element) => element.classList.remove(`${element.classList[0]}--disabled`);
 
+const displayOffersLoadErrorMessage = () => {
+  const mapElement = document.querySelector('.map');
+  const mapLoadFailedMessage = document.createElement('div');
+  mapLoadFailedMessage.textContent = 'Загрузка объявлений не удалась, попробуйте обновить страницу';
+  mapLoadFailedMessage.style.position = 'absolute';
+  mapLoadFailedMessage.style.zIndex = '1000';
+  mapLoadFailedMessage.style.left = '0';
+  mapLoadFailedMessage.style.top = '0';
+  mapLoadFailedMessage.style.width = '100%';
+  mapLoadFailedMessage.style.padding = '10px 0 10px 0';
+  mapLoadFailedMessage.style.fontSize = '20px';
+  mapLoadFailedMessage.style.color = 'white';
+  mapLoadFailedMessage.style.backgroundColor = 'red';
+  mapLoadFailedMessage.style.textAlign = 'center';
+
+  mapElement.prepend(mapLoadFailedMessage);
+
+  setTimeout(() => mapLoadFailedMessage.remove(), 10000);
+};
+
 export {
   getRandomInteger,
   getRandomFloat,
@@ -130,4 +150,5 @@ export {
   enableElements,
   disableElement,
   enableElement,
+  displayOffersLoadErrorMessage,
 };
