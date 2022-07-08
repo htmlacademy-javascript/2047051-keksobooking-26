@@ -16,5 +16,5 @@ const getData = (address) => fetch(address)
     displayOffersLoadErrorMessage();
   });
 
-getData('https://26.javascript.pages.academ/keksobooking/data');
+getData('https://26.javascript.pages.academy/keksobooking/data');
 
