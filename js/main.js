@@ -9,3 +9,5 @@ import './form.js';
 import './validation.js';
 
 import './map-markers.js';
+
+import './api.js';

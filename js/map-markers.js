@@ -2,18 +2,13 @@ import {
   deactivatePage,
   activatePage,} from './form.js';
 
-import {rentOffers} from './data.js';
-
-import {createCardsInDom} from './create-dom-elements.js';
-
 deactivatePage();
 
 const DEFAULT_LAT = 35.67844;
 const DEFAULT_LNG = 139.77376;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
-const offersList = rentOffers();
-const offerCards = createCardsInDom(offersList);
+
 
 const mainIcon = L.icon(
   {
@@ -63,7 +58,7 @@ mainMarker.on('moveend', (evt) => {
   addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
-const createCommonMarker = (offer, index) => {
+const createCommonMarker = (parentElement, offer, index) => {
   const {lat, lng} = offer.location;
   const marker = L.marker(
     {
@@ -76,12 +71,8 @@ const createCommonMarker = (offer, index) => {
   );
   marker
     .addTo(mainLayer)
-    .bindPopup(offerCards.children[index]);
+    .bindPopup(parentElement.children[index]);
 };
-
-offersList.forEach((offer, index) => {
-  createCommonMarker(offer, index);
-});
 
 resetButtonElement.addEventListener('click', () => {
   map.setView({
@@ -93,3 +84,5 @@ resetButtonElement.addEventListener('click', () => {
     lng: DEFAULT_LNG,
   });
 });
+
+export {createCommonMarker};

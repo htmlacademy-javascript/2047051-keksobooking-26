@@ -1,13 +1,13 @@
 import {
   getRussianTypesNames,
+  getRoomEnding,
+  getGuestEnding,
   getFeaturesAsDomElements,
-  setPhotoSrc
+  setPhotoSrc,
 } from './utils.js';
 
 const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
-const getRoomEnding = (count) => count > 1 ? 'комнаты' : 'комната';
-const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
 
 const createCardsInDom = (offers) => {
   const offersContainerElement = document.createElement('div');

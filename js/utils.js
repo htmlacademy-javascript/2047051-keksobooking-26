@@ -64,6 +64,23 @@ const getRussianTypesNames = (type) => {
   return type;
 };
 
+const getRoomEnding = (count) => {
+  switch (count) {
+    case 1:
+      count = 'комната';
+      break;
+    case 100:
+      count = 'комнат';
+      break;
+    default:
+      count = 'комнаты';
+      break;
+  }
+  return count;
+};
+
+const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
+
 const getFeaturesAsDomElements = (possibleFeatures, featuresInOffer ) => {
   possibleFeatures.forEach((possibleFeaturesItem) => {
     const isIncluded = featuresInOffer.some((featuresInOfferItem) => possibleFeaturesItem.classList.contains(`popup__feature--${featuresInOfferItem}`));
@@ -105,6 +122,8 @@ export {
   getPhotos,
   getRandomFeatures,
   getRussianTypesNames,
+  getRoomEnding,
+  getGuestEnding,
   getFeaturesAsDomElements,
   setPhotoSrc,
   disableElements,
