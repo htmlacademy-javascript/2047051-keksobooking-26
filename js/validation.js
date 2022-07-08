@@ -1,9 +1,12 @@
 import {
   getRoomEnding,
-  getGuestEnding
+  getGuestEnding,
+  getSuccessMessage,
+  getErrorMessage,
 } from './create-dom-elements.js';
 
 import {adFormElement} from './form.js';
+import {sendData} from './api.js';
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
@@ -36,7 +39,6 @@ const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeField = document.querySelector('.ad-form__element--time');
 const noUiSliderElement = document.querySelector('.ad-form__slider');
-const priceFieldElement = document.querySelector('#price');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -49,9 +51,11 @@ const defaultPristineConfig = {
 const pristine = new Pristine(adFormElement, defaultPristineConfig, true);
 
 adFormElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
   const isValidForm = pristine.validate();
-  if (!isValidForm) {
-    evt.preventDefault();
+  if (isValidForm) {
+    const formData = new FormData(evt.target);
+    sendData('https://26.javascript.pages.academy/keksobooking',getSuccessMessage, getErrorMessage, formData, evt);
   }
 });
 
@@ -151,7 +155,8 @@ noUiSlider.create(noUiSliderElement, {
 });
 
 noUiSliderElement.noUiSlider.on('slide', () => {
-  priceFieldElement.value = noUiSliderElement.noUiSlider.get();
+  priceElement.value = noUiSliderElement.noUiSlider.get();
+  pristine.validate(priceElement);
 });
 
 const setNoUiSliderOptions = () => {

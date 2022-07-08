@@ -9,6 +9,22 @@ import {
 const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
 
+const getSuccessMessage = () => {
+  const successMessageTemplateElement = document.querySelector('#success').content;
+  const successMessageElement = successMessageTemplateElement.querySelector('.success');
+  const successMessageInDom = successMessageElement.cloneNode(true);
+
+  return successMessageInDom;
+};
+
+const getErrorMessage = () => {
+  const errorMessageTemplateElement = document.querySelector('#error').content;
+  const errorMessageElement = errorMessageTemplateElement.querySelector('.error');
+  const errorMessageInDom = errorMessageElement.cloneNode(true);
+
+  return errorMessageInDom;
+};
+
 const createCardsInDom = (offers) => {
   const offersContainerElement = document.createElement('div');
   offers.forEach((offerPost) => {
@@ -110,4 +126,6 @@ export {
   createCardsInDom,
   getGuestEnding,
   getRoomEnding,
+  getSuccessMessage,
+  getErrorMessage,
 };

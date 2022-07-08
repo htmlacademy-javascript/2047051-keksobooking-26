@@ -65,7 +65,7 @@ const getRussianTypesNames = (type) => {
 };
 
 const getRoomEnding = (count) => {
-  switch (count) {
+  switch (Number(count)) {
     case 1:
       count = 'комната';
       break;
