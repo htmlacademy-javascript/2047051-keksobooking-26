@@ -99,7 +99,9 @@ const setMapDefaultPosition = () => {
   });
 };
 
-resetButtonElement.addEventListener('click', setMapDefaultPosition);
+const onResetButtonClick = setMapDefaultPosition;
+
+resetButtonElement.addEventListener('click', onResetButtonClick);
 
 export {
   createCommonMarker,
