@@ -12,6 +12,7 @@ deactivatePage();
 
 const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
+const DEFAULT_MAP_ZOOM = 13;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 
@@ -35,7 +36,7 @@ const commonIcon = L.icon(
 const map = L.map('map-canvas').on('load', activatePage).setView({
   lat: DEFAULT_LAT,
   lng: DEFAULT_LNG,
-}, 13);
+}, DEFAULT_MAP_ZOOM);
 
 const mainLayer = L.layerGroup().addTo(map);
 
@@ -92,7 +93,7 @@ const setMapDefaultPosition = () => {
   map.setView({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
-  }, 13);
+  }, DEFAULT_MAP_ZOOM);
   mainMarker.setLatLng({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
