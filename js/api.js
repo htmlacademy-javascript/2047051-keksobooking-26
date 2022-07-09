@@ -4,37 +4,37 @@ const TIME_TO_DISPLAY_MESSAGE = 10000;
 
 const createEventListeners = (message) => {
   document.body.append(message);
-  const onKeydown = (evt) => {
+  const onDocumentKeydown = (evt) => {
     if (evt.key === 'Escape') {
       message.remove();
     }
-    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('keydown', onDocumentKeydown);
   };
-  const onClick = () => {
+  const onDocumentClick = () => {
     message.remove();
-    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('keydown', onDocumentKeydown);
   };
-  document.addEventListener('keydown', onKeydown);
-  message.addEventListener('click', onClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  message.addEventListener('click', onDocumentClick);
   setTimeout(() => {
     message.remove();
-    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener('keydown', onDocumentKeydown);
   }, TIME_TO_DISPLAY_MESSAGE);
 };
 
-const getData = (address, popupConstructor, markerConstructor, errorMessageElement) => fetch(address)
+const getData = (address, getPopupElements, getMarkersOnMap, errorMessageElement) => fetch(address)
   .then((response) => response.json())
   .then((data) => {
-    const offerCards = popupConstructor(data);
+    const offerCards = getPopupElements(data);
     data.forEach((offer, index) => {
-      markerConstructor(offerCards, offer, index);
+      getMarkersOnMap(offerCards, offer, index);
     });
   })
   .catch(() => {
     errorMessageElement();
   });
 
-const sendData = (address, succsess, errorr, data, setMapDefaultPosition) => {
+const sendData = (address, getSuccsessMessage, getErrorMessage, data, setMapDefaultPosition) => {
   fetch(address,
     {
       method: 'POST',
@@ -43,11 +43,11 @@ const sendData = (address, succsess, errorr, data, setMapDefaultPosition) => {
   ).then(() => {
     resetAllForms();
     setMapDefaultPosition();
-    const message = succsess();
+    const message = getSuccsessMessage();
     document.body.append(message);
     createEventListeners(message);
   }).catch(() => {
-    const message = errorr();
+    const message = getErrorMessage();
     const errorButton = message.querySelector('.error__button');
     errorButton.addEventListener('click', () => {
       message.remove();

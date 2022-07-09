@@ -10,8 +10,8 @@ import {getData} from './api.js';
 
 deactivatePage();
 
-const DEFAULT_LAT = 35.67844;
-const DEFAULT_LNG = 139.77376;
+const DEFAULT_LAT = 35.68173;
+const DEFAULT_LNG = 139.75393;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 
@@ -35,40 +35,9 @@ const commonIcon = L.icon(
 const map = L.map('map-canvas').on('load', activatePage).setView({
   lat: DEFAULT_LAT,
   lng: DEFAULT_LNG,
-}, 12);
+}, 13);
 
 const mainLayer = L.layerGroup().addTo(map);
-
-const createCommonMarker = (parentElement, offer, index) => {
-  const {lat, lng} = offer.location;
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      icon: commonIcon,
-    }
-  );
-  marker
-    .addTo(mainLayer)
-    .bindPopup(parentElement.children[index]);
-};
-
-const closePopups = () => {
-  map.closePopup();
-};
-
-const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, showOffersLoadErrorMessage);
-
-map.on('load', dataFromServer);
-
-const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-});
-
-mapTiles.addTo(mainLayer);
 
 const mainMarker = L.marker(
   {
@@ -88,11 +57,42 @@ mainMarker.on('moveend', (evt) => {
   addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
 
+const createCommonMarker = (parentElement, offer, index) => {
+  const {lat, lng} = offer.location;
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon: commonIcon,
+    }
+  );
+  marker
+    .addTo(mainLayer)
+    .bindPopup(parentElement.children[index]);
+};
+
+const closeMapPopups = () => {
+  map.closePopup();
+};
+
+const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, showOffersLoadErrorMessage);
+
+map.on('load', dataFromServer);
+
+const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
+
+mapTiles.addTo(mainLayer);
+
 const setMapDefaultPosition = () => {
   map.setView({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
-  }, 12);
+  }, 13);
   mainMarker.setLatLng({
     lat: DEFAULT_LAT,
     lng: DEFAULT_LNG,
@@ -103,6 +103,6 @@ resetButtonElement.addEventListener('click', setMapDefaultPosition);
 
 export {
   createCommonMarker,
-  closePopups,
+  closeMapPopups,
   setMapDefaultPosition,
 };

@@ -10,7 +10,7 @@ import {adFormElement} from './form.js';
 import {sendData} from './api.js';
 
 import {
-  closePopups,
+  closeMapPopups,
   setMapDefaultPosition,
 } from './map-markers.js';
 
@@ -173,7 +173,7 @@ const setNoUiSliderValue = () => {
 };
 
 const resetAllForms = () => {
-  closePopups();
+  closeMapPopups();
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
