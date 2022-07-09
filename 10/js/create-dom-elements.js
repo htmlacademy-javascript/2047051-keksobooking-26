@@ -10,19 +10,19 @@ const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
 
 const getSuccessMessage = () => {
-  const successMessageTemplateElement = document.querySelector('#success').content;
-  const successMessageElement = successMessageTemplateElement.querySelector('.success');
-  const successMessageInDom = successMessageElement.cloneNode(true);
+  const successMessageTemplate = document.querySelector('#success').content;
+  const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
+  const successMessageElement = successMessageTemplateElement.cloneNode(true);
 
-  return successMessageInDom;
+  return successMessageElement;
 };
 
 const getErrorMessage = () => {
-  const errorMessageTemplateElement = document.querySelector('#error').content;
-  const errorMessageElement = errorMessageTemplateElement.querySelector('.error');
-  const errorMessageInDom = errorMessageElement.cloneNode(true);
+  const errorMessageTemplate = document.querySelector('#error').content;
+  const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
+  const errorMessageElement = errorMessageTemplateElement.cloneNode(true);
 
-  return errorMessageInDom;
+  return errorMessageElement;
 };
 
 const createPopupsInDom = (offers) => {

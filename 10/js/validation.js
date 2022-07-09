@@ -10,7 +10,7 @@ import {adFormElement} from './form.js';
 import {sendData} from './api.js';
 
 import {
-  closePopups,
+  closeMapPopups,
   setMapDefaultPosition,
 } from './map-markers.js';
 
@@ -18,7 +18,7 @@ const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
-const TimesInOut = {
+const Times = {
   TWELVE: '12:00',
   THIRTEEN: '13:00',
   FOURTEEN: '14:00',
@@ -80,17 +80,17 @@ const validateRoomsErrorMessage = () => {
   }
 };
 
-const syncTimeInOut = (evt) => {
+const syncTimeFields = (evt) => {
   switch (evt.target.value) {
-    case TimesInOut.TWELVE:
+    case Times.TWELVE:
       timeInElement.selectedIndex = 0;
       timeOutElement.selectedIndex = 0;
       break;
-    case TimesInOut.THIRTEEN:
+    case Times.THIRTEEN:
       timeInElement.selectedIndex = 1;
       timeOutElement.selectedIndex = 1;
       break;
-    case TimesInOut.FOURTEEN:
+    case Times.FOURTEEN:
       timeInElement.selectedIndex = 2;
       timeOutElement.selectedIndex = 2;
       break;
@@ -173,7 +173,7 @@ const setNoUiSliderValue = () => {
 };
 
 const resetAllForms = () => {
-  closePopups();
+  closeMapPopups();
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
@@ -191,17 +191,28 @@ const sendOffersToServer = (evt) => {
   }
 };
 
-adFormElement.addEventListener('submit', sendOffersToServer);
+const onSubmitButtonClick = sendOffersToServer;
 
-resetButtonElement.addEventListener('click', resetAllForms);
+const onResetButtonClick = resetAllForms;
 
-typeElement.addEventListener('change', getTypeMinPrice);
+const onPriceElementChange = setNoUiSliderValue;
 
-typeElement.addEventListener('change', setNoUiSliderOptions);
+const onTimeFieldChange = syncTimeFields;
 
-priceElement.addEventListener('change', setNoUiSliderValue);
+const onTypeElementChange = () => {
+  getTypeMinPrice();
+  setNoUiSliderOptions();
+};
 
-timeField.addEventListener('change', syncTimeInOut);
+adFormElement.addEventListener('submit', onSubmitButtonClick);
+
+resetButtonElement.addEventListener('click', onResetButtonClick);
+
+typeElement.addEventListener('change', onTypeElementChange);
+
+priceElement.addEventListener('change', onPriceElementChange);
+
+timeField.addEventListener('change', onTimeFieldChange);
 
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
 
