@@ -1,15 +1,31 @@
 import {
   getRussianTypesNames,
+  getRoomEnding,
+  getGuestEnding,
   getFeaturesAsDomElements,
-  setPhotoSrc
+  setPhotoSrc,
 } from './utils.js';
 
 const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
-const getRoomEnding = (count) => count > 1 ? 'комнаты' : 'комната';
-const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
 
-const createCardsInDom = (offers) => {
+const getSuccessMessage = () => {
+  const successMessageTemplate = document.querySelector('#success').content;
+  const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
+  const successMessageElement = successMessageTemplateElement.cloneNode(true);
+
+  return successMessageElement;
+};
+
+const getErrorMessage = () => {
+  const errorMessageTemplate = document.querySelector('#error').content;
+  const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
+  const errorMessageElement = errorMessageTemplateElement.cloneNode(true);
+
+  return errorMessageElement;
+};
+
+const createPopupsInDom = (offers) => {
   const offersContainerElement = document.createElement('div');
   offers.forEach((offerPost) => {
     const newOfferInDomElement = parentElement.cloneNode(true);
@@ -107,7 +123,9 @@ const createCardsInDom = (offers) => {
 };
 
 export {
-  createCardsInDom,
+  createPopupsInDom,
   getGuestEnding,
   getRoomEnding,
+  getSuccessMessage,
+  getErrorMessage,
 };

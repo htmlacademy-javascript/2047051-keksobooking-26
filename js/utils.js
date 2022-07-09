@@ -1,3 +1,5 @@
+const TIME_TO_DISPLAY_MAP_MESSAGE = 10000;
+
 const getRandomInteger = (scaleLow, scaleHigh) => {
   if (scaleLow === scaleHigh) {
     return scaleLow;
@@ -64,6 +66,23 @@ const getRussianTypesNames = (type) => {
   return type;
 };
 
+const getRoomEnding = (count) => {
+  switch (Number(count)) {
+    case 1:
+      count = 'комната';
+      break;
+    case 100:
+      count = 'комнат';
+      break;
+    default:
+      count = 'комнаты';
+      break;
+  }
+  return count;
+};
+
+const getGuestEnding = (count) => count > 1 ? 'гостей' : 'гостя';
+
 const getFeaturesAsDomElements = (possibleFeatures, featuresInOffer ) => {
   possibleFeatures.forEach((possibleFeaturesItem) => {
     const isIncluded = featuresInOffer.some((featuresInOfferItem) => possibleFeaturesItem.classList.contains(`popup__feature--${featuresInOfferItem}`));
@@ -98,6 +117,26 @@ const disableElement = (element) => element.classList.add(`${element.classList[0
 
 const enableElement = (element) => element.classList.remove(`${element.classList[0]}--disabled`);
 
+const showOffersLoadErrorMessage = () => {
+  const mapElement = document.querySelector('.map');
+  const mapLoadFailedMessage = document.createElement('div');
+  mapLoadFailedMessage.textContent = 'Загрузка объявлений не удалась, попробуйте обновить страницу';
+  mapLoadFailedMessage.style.position = 'absolute';
+  mapLoadFailedMessage.style.zIndex = '1000';
+  mapLoadFailedMessage.style.left = '0';
+  mapLoadFailedMessage.style.top = '0';
+  mapLoadFailedMessage.style.width = '100%';
+  mapLoadFailedMessage.style.padding = '10px 0 10px 0';
+  mapLoadFailedMessage.style.fontSize = '20px';
+  mapLoadFailedMessage.style.color = 'white';
+  mapLoadFailedMessage.style.backgroundColor = 'red';
+  mapLoadFailedMessage.style.textAlign = 'center';
+
+  mapElement.prepend(mapLoadFailedMessage);
+
+  setTimeout(() => mapLoadFailedMessage.remove(), TIME_TO_DISPLAY_MAP_MESSAGE);
+};
+
 export {
   getRandomInteger,
   getRandomFloat,
@@ -105,10 +144,13 @@ export {
   getPhotos,
   getRandomFeatures,
   getRussianTypesNames,
+  getRoomEnding,
+  getGuestEnding,
   getFeaturesAsDomElements,
   setPhotoSrc,
   disableElements,
   enableElements,
   disableElement,
   enableElement,
+  showOffersLoadErrorMessage,
 };

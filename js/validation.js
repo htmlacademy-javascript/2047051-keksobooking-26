@@ -1,15 +1,24 @@
 import {
   getRoomEnding,
-  getGuestEnding
+  getGuestEnding,
+  getSuccessMessage,
+  getErrorMessage,
 } from './create-dom-elements.js';
 
 import {adFormElement} from './form.js';
+
+import {sendData} from './api.js';
+
+import {
+  closeMapPopups,
+  setMapDefaultPosition,
+} from './map-markers.js';
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
-const TimesInOut = {
+const Times = {
   TWELVE: '12:00',
   THIRTEEN: '13:00',
   FOURTEEN: '14:00',
@@ -36,7 +45,8 @@ const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 const timeField = document.querySelector('.ad-form__element--time');
 const noUiSliderElement = document.querySelector('.ad-form__slider');
-const priceFieldElement = document.querySelector('#price');
+const formElements = document.querySelectorAll('form');
+const resetButtonElement = adFormElement.querySelector('.ad-form__reset');
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -47,13 +57,6 @@ const defaultPristineConfig = {
 };
 
 const pristine = new Pristine(adFormElement, defaultPristineConfig, true);
-
-adFormElement.addEventListener('submit', (evt) => {
-  const isValidForm = pristine.validate();
-  if (!isValidForm) {
-    evt.preventDefault();
-  }
-});
 
 const getRoomsValidBool = () => {
   roomNumberElementValue = roomNumberElement.value;
@@ -77,17 +80,17 @@ const validateRoomsErrorMessage = () => {
   }
 };
 
-const syncTimeInOut = (evt) => {
+const syncTimeFields = (evt) => {
   switch (evt.target.value) {
-    case TimesInOut.TWELVE:
+    case Times.TWELVE:
       timeInElement.selectedIndex = 0;
       timeOutElement.selectedIndex = 0;
       break;
-    case TimesInOut.THIRTEEN:
+    case Times.THIRTEEN:
       timeInElement.selectedIndex = 1;
       timeOutElement.selectedIndex = 1;
       break;
-    case TimesInOut.FOURTEEN:
+    case Times.FOURTEEN:
       timeInElement.selectedIndex = 2;
       timeOutElement.selectedIndex = 2;
       break;
@@ -151,7 +154,8 @@ noUiSlider.create(noUiSliderElement, {
 });
 
 noUiSliderElement.noUiSlider.on('slide', () => {
-  priceFieldElement.value = noUiSliderElement.noUiSlider.get();
+  priceElement.value = noUiSliderElement.noUiSlider.get();
+  pristine.validate(priceElement);
 });
 
 const setNoUiSliderOptions = () => {
@@ -168,11 +172,50 @@ const setNoUiSliderValue = () => {
   noUiSliderElement.noUiSlider.set(priceElement.value);
 };
 
-typeElement.addEventListener('change', getTypeMinPrice);
-typeElement.addEventListener('change', setNoUiSliderOptions);
-priceElement.addEventListener('change', setNoUiSliderValue);
-timeField.addEventListener('change', syncTimeInOut);
+const resetAllForms = () => {
+  closeMapPopups();
+  noUiSliderElement.noUiSlider.updateOptions({
+    start: 0,
+  });
+  for (const formElement of formElements) {
+    formElement.reset();
+  }
+};
+
+const sendOffersToServer = (evt) => {
+  evt.preventDefault();
+  const isValidForm = pristine.validate();
+  if (isValidForm) {
+    const formData = new FormData(evt.target);
+    sendData('https://26.javascript.pages.academy/keksobooking',getSuccessMessage, getErrorMessage, formData, setMapDefaultPosition);
+  }
+};
+
+const onSubmitButtonClick = sendOffersToServer;
+
+const onResetButtonClick = resetAllForms;
+
+const onPriceElementChange = setNoUiSliderValue;
+
+const onTimeFieldChange = syncTimeFields;
+
+const onTypeElementChange = () => {
+  getTypeMinPrice();
+  setNoUiSliderOptions();
+};
+
+adFormElement.addEventListener('submit', onSubmitButtonClick);
+
+resetButtonElement.addEventListener('click', onResetButtonClick);
+
+typeElement.addEventListener('change', onTypeElementChange);
+
+priceElement.addEventListener('change', onPriceElementChange);
+
+timeField.addEventListener('change', onTimeFieldChange);
+
 pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+
 pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
 
-
+export {resetAllForms};
