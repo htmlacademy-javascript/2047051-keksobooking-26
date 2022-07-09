@@ -4,7 +4,7 @@ import {
 
 import {createPopupsInDom} from './create-dom-elements.js';
 
-import {displayOffersLoadErrorMessage} from './utils.js';
+import {showOffersLoadErrorMessage} from './utils.js';
 
 import {getData} from './api.js';
 
@@ -59,7 +59,7 @@ const closePopups = () => {
   map.closePopup();
 };
 
-const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, displayOffersLoadErrorMessage);
+const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, showOffersLoadErrorMessage);
 
 map.on('load', dataFromServer);
 

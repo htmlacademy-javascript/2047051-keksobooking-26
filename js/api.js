@@ -1,5 +1,7 @@
 import {resetAllForms} from './validation.js';
 
+const TIME_TO_DISPLAY_MESSAGE = 10000;
+
 const createEventListeners = (message) => {
   document.body.append(message);
   const onKeydown = (evt) => {
@@ -17,7 +19,7 @@ const createEventListeners = (message) => {
   setTimeout(() => {
     message.remove();
     document.removeEventListener('keydown', onKeydown);
-  }, 10000);
+  }, TIME_TO_DISPLAY_MESSAGE);
 };
 
 const getData = (address, popupConstructor, markerConstructor, errorMessageElement) => fetch(address)

@@ -1,3 +1,5 @@
+const TIME_TO_DISPLAY_MAP_MESSAGE = 10000;
+
 const getRandomInteger = (scaleLow, scaleHigh) => {
   if (scaleLow === scaleHigh) {
     return scaleLow;
@@ -115,7 +117,7 @@ const disableElement = (element) => element.classList.add(`${element.classList[0
 
 const enableElement = (element) => element.classList.remove(`${element.classList[0]}--disabled`);
 
-const displayOffersLoadErrorMessage = () => {
+const showOffersLoadErrorMessage = () => {
   const mapElement = document.querySelector('.map');
   const mapLoadFailedMessage = document.createElement('div');
   mapLoadFailedMessage.textContent = 'Загрузка объявлений не удалась, попробуйте обновить страницу';
@@ -132,7 +134,7 @@ const displayOffersLoadErrorMessage = () => {
 
   mapElement.prepend(mapLoadFailedMessage);
 
-  setTimeout(() => mapLoadFailedMessage.remove(), 10000);
+  setTimeout(() => mapLoadFailedMessage.remove(), TIME_TO_DISPLAY_MAP_MESSAGE);
 };
 
 export {
@@ -150,5 +152,5 @@ export {
   enableElements,
   disableElement,
   enableElement,
-  displayOffersLoadErrorMessage,
+  showOffersLoadErrorMessage,
 };
