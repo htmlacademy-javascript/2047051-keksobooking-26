@@ -48,4 +48,5 @@ export {
   activateMap,
   activatePage,
   adFormElement,
+  mapFiltersFormElement,
 };

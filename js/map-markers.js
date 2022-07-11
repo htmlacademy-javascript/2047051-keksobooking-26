@@ -2,6 +2,7 @@ import {
   deactivatePage,
   activateMap,
   activateAdForm,
+  mapFiltersFormElement,
 } from './form.js';
 
 import {createPopupsInDom} from './create-dom-elements.js';
@@ -55,7 +56,7 @@ const mainMarker = L.marker(
   }
 );
 
-mainMarker.addTo(mainLayer);
+mainMarker.addTo(map);
 
 mainMarker.on('drag', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
@@ -98,7 +99,7 @@ const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 });
 
-mapTiles.addTo(mainLayer);
+mapTiles.addTo(map);
 
 const setMapDefaultPosition = () => {
   map.setView({
@@ -114,6 +115,16 @@ const setMapDefaultPosition = () => {
 const onResetButtonClick = setMapDefaultPosition;
 
 resetButtonElement.addEventListener('click', onResetButtonClick);
+
+mapFiltersFormElement.addEventListener('change', () => {
+  mainLayer.clearLayers();
+  dataFromServer.then((data) => {
+    const offerCards = createPopupsInDom(data);
+    for (let i = 40; i < 50; i++) {
+      createCommonMarker(offerCards, data[i], i);
+    }
+  }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
+});
 
 export {
   createCommonMarker,
