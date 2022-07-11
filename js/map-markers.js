@@ -1,6 +1,8 @@
 import {
   deactivatePage,
-  activatePage,} from './form.js';
+  activateMap,
+  activateAdForm,
+} from './form.js';
 
 import {createPopupsInDom} from './create-dom-elements.js';
 
@@ -33,7 +35,9 @@ const commonIcon = L.icon(
   }
 );
 
-const map = L.map('map-canvas').on('load', activatePage).setView({
+const map = L.map('map-canvas');
+
+map.on('load', activateAdForm).setView({
   lat: DEFAULT_LAT,
   lng: DEFAULT_LNG,
 }, DEFAULT_MAP_ZOOM);
@@ -53,7 +57,7 @@ const mainMarker = L.marker(
 
 mainMarker.addTo(mainLayer);
 
-mainMarker.on('moveend', (evt) => {
+mainMarker.on('drag', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
   addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
 });
@@ -78,7 +82,14 @@ const closeMapPopups = () => {
   map.closePopup();
 };
 
-const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', createPopupsInDom, createCommonMarker, showOffersLoadErrorMessage);
+const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
+
+dataFromServer.then((data) => {
+  const offerCards = createPopupsInDom(data);
+  for (let i = 0; i < 10; i++) {
+    createCommonMarker(offerCards, data[i], i);
+  }
+}).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
 
 map.on('load', dataFromServer);
 

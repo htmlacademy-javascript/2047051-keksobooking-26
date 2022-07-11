@@ -22,14 +22,8 @@ const createEventListeners = (message) => {
   }, TIME_TO_DISPLAY_MESSAGE);
 };
 
-const getData = (address, getPopupElements, getMarkersOnMap, errorMessageElement) => fetch(address)
+const getData = (address, errorMessageElement) => fetch(address)
   .then((response) => response.json())
-  .then((data) => {
-    const offerCards = getPopupElements(data);
-    data.forEach((offer, index) => {
-      getMarkersOnMap(offerCards, offer, index);
-    });
-  })
   .catch(() => {
     errorMessageElement();
   });

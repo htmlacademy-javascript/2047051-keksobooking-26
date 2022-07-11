@@ -10,22 +10,42 @@ const adFormInteractiveElements = adFormElement.querySelectorAll('select,input,t
 const mapFiltersFormElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = mapFiltersFormElement.querySelectorAll('select,input');
 
-const deactivatePage = () => {
+const deactivateAdForm = () => {
   disableElements(adFormInteractiveElements);
   disableElement(adFormElement);
+};
+
+const deactivateMap = () => {
   disableElements(mapFiltersInteractiveElements);
   disableElement(mapFiltersFormElement);
 };
 
-const activatePage = () => {
+const deactivatePage = () => {
+  deactivateAdForm();
+  deactivateMap();
+};
+
+const activateAdForm = () => {
   enableElements(adFormInteractiveElements);
   enableElement(adFormElement);
+};
+
+const activateMap = () => {
   enableElements(mapFiltersInteractiveElements);
   enableElement(mapFiltersFormElement);
 };
 
+const activatePage = () => {
+  activateAdForm();
+  activateMap();
+};
+
 export {
+  deactivateAdForm,
+  deactivateMap,
   deactivatePage,
+  activateAdForm,
+  activateMap,
   activatePage,
   adFormElement,
 };
