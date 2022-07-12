@@ -18,7 +18,7 @@ const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
-
+const housingType = document.querySelector('#housing-type');
 
 const mainIcon = L.icon(
   {
@@ -85,11 +85,18 @@ const closeMapPopups = () => {
 
 const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
 
-dataFromServer.then((data) => {
-  const offerCards = createPopupsInDom(data);
+const setFilteredMarkers = (data) => {
+  const filteredOffers = data.filter((offer) => offer.offer.type === housingType.value || housingType.value === 'any');
+  const offerCards = createPopupsInDom(filteredOffers);
   for (let i = 0; i < 10; i++) {
-    createCommonMarker(offerCards, data[i], i);
+    if (filteredOffers[i]) {
+      createCommonMarker(offerCards, filteredOffers[i], i);
+    }
   }
+};
+
+dataFromServer.then((data) => {
+  setFilteredMarkers(data);
 }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
 
 map.on('load', dataFromServer);
@@ -119,10 +126,7 @@ resetButtonElement.addEventListener('click', onResetButtonClick);
 mapFiltersFormElement.addEventListener('change', () => {
   mainLayer.clearLayers();
   dataFromServer.then((data) => {
-    const offerCards = createPopupsInDom(data);
-    for (let i = 40; i < 50; i++) {
-      createCommonMarker(offerCards, data[i], i);
-    }
+    setFilteredMarkers(data);
   }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
 });
 
