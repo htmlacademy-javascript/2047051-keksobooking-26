@@ -19,6 +19,9 @@ const DEFAULT_MAP_ZOOM = 13;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 const housingType = document.querySelector('#housing-type');
+const housingPrice = document.querySelector('#housing-price');
+const housingGuests = document.querySelector('#housing-guests');
+const housingRooms = document.querySelector('#housing-rooms');
 
 const mainIcon = L.icon(
   {
@@ -85,9 +88,23 @@ const closeMapPopups = () => {
 
 const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
 
+const getRelativePrice =(relativePrice, actualPrice) => {
+  switch (relativePrice) {
+    case 'low':
+      return actualPrice < 1000 ;
+    case 'middle':
+      return actualPrice >= 1000 && actualPrice <= 50000;
+    case 'high':
+      return actualPrice > 50000;
+    default:
+      return true;
+  }
+};
+
 const setFilteredMarkers = (data) => {
-  const filteredOffers = data.filter((offer) => offer.offer.type === housingType.value || housingType.value === 'any');
+  const filteredOffers = data.filter((offer) => (offer.offer.type === housingType.value || housingType.value === 'any') && getRelativePrice(housingPrice.value, (offer.offer.price) || housingPrice.value === 'any') && (offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any') && (offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any'));
   const offerCards = createPopupsInDom(filteredOffers);
+  console.log(filteredOffers);
   for (let i = 0; i < 10; i++) {
     if (filteredOffers[i]) {
       createCommonMarker(offerCards, filteredOffers[i], i);
