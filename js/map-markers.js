@@ -101,10 +101,28 @@ const getRelativePrice =(relativePrice, actualPrice) => {
   }
 };
 
+const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
+
+const testOfferFeatures = (offer) => {
+  let count = 0;
+  if (offer.offer.features) {
+    for (const featureCheckbox of housingFeatures) {
+      if (featureCheckbox.checked) {
+        count++;
+        const value = featureCheckbox.value;
+        return offer.offer.features.includes(value);
+      }
+    }
+    if (count === 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const setFilteredMarkers = (data) => {
-  const filteredOffers = data.filter((offer) => (offer.offer.type === housingType.value || housingType.value === 'any') && getRelativePrice(housingPrice.value, (offer.offer.price) || housingPrice.value === 'any') && (offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any') && (offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any'));
+  const filteredOffers = data.filter((offer) => (offer.offer.type === housingType.value || housingType.value === 'any') && getRelativePrice(housingPrice.value, (offer.offer.price) || housingPrice.value === 'any') && (offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any') && (offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any' && testOfferFeatures(offer)));
   const offerCards = createPopupsInDom(filteredOffers);
-  console.log(filteredOffers);
   for (let i = 0; i < 10; i++) {
     if (filteredOffers[i]) {
       createCommonMarker(offerCards, filteredOffers[i], i);
