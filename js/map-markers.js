@@ -17,6 +17,7 @@ const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
 const MAX_MARKERS_ON_MAP = 10;
+const DEBOUNCE_TIME = 500;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 const housingType = document.querySelector('#housing-type');
@@ -205,7 +206,7 @@ const refreshMarkersOnMap = debounce(
       showFilteredMarkers(data);
     }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
   },
-  500
+  DEBOUNCE_TIME
 );
 
 mapFiltersFormElement.addEventListener('change', refreshMarkersOnMap);
