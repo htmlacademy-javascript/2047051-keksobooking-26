@@ -104,18 +104,29 @@ const getRelativePrice =(relativePrice, actualPrice) => {
 const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
 
 const testOfferFeatures = (offer) => {
-  let count = 0;
+  let hasFilteredFeatures = false;
+  let countCheckedFeatures = 0;
+  let countFeaturesInOffer = 0;
+  for (const featureCheckbox of housingFeatures) {
+    if (featureCheckbox.checked) {
+      hasFilteredFeatures = true;
+    }
+  }
   if (offer.offer.features) {
     for (const featureCheckbox of housingFeatures) {
       if (featureCheckbox.checked) {
-        count++;
+        countCheckedFeatures++;
         const value = featureCheckbox.value;
-        return offer.offer.features.includes(value);
+        if (offer.offer.features.includes(value)) {
+          countFeaturesInOffer++;
+        }
       }
     }
-    if (count === 0) {
-      return true;
-    }
+  } else if (!offer.offer.features && hasFilteredFeatures) {
+    return false;
+  }
+  if (countCheckedFeatures===countFeaturesInOffer) {
+    return true;
   }
   return false;
 };
