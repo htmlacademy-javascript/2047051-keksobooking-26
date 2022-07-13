@@ -7,7 +7,10 @@ import {
 
 import {createPopupsInDom} from './create-dom-elements.js';
 
-import {showOffersLoadErrorMessage} from './utils.js';
+import {
+  showOffersLoadErrorMessage,
+  debounce,
+} from './utils.js';
 
 import {getData} from './api.js';
 
@@ -17,7 +20,7 @@ const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
 const MAX_MARKERS_ON_MAP = 10;
-const DEBOUNCE_TIME = 500;
+const REFRESH_DEBOUNCE_TIME = 500;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 const housingType = document.querySelector('#housing-type');
@@ -27,7 +30,7 @@ const housingRooms = document.querySelector('#housing-rooms');
 const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
 const Prices = {
   lowSetPoint: 10000,
-  highSePpoint: 50000,
+  highSePoint: 50000,
 };
 
 const mainIcon = L.icon(
@@ -100,11 +103,11 @@ const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
-      return actualPrice < Prices.highSePpoint ;
+      return actualPrice < Prices.highSePoint ;
     case 'middle':
-      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePpoint;
+      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePoint;
     case 'high':
-      return actualPrice > Prices.highSePpoint;
+      return actualPrice > Prices.highSePoint;
     default:
       return true;
   }
@@ -191,14 +194,6 @@ const onResetButtonClick = setMapDefaultPosition;
 
 resetButtonElement.addEventListener('click', onResetButtonClick);
 
-const debounce = (callback, timeoutDelay) => {
-  let timeoutId;
-  return (...rest) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-  };
-};
-
 const refreshMarkersOnMap = debounce(
   () => {
     clearMap();
@@ -206,7 +201,7 @@ const refreshMarkersOnMap = debounce(
       showFilteredMarkers(data);
     }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
   },
-  DEBOUNCE_TIME
+  REFRESH_DEBOUNCE_TIME
 );
 
 mapFiltersFormElement.addEventListener('change', refreshMarkersOnMap);
