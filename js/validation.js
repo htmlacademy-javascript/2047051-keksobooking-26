@@ -21,12 +21,18 @@ import {
   clearMap,
 } from './map-markers.js';
 
+import {
+  offerAvatarPreview,
+  offerImagePreview,
+} from './photo-preview.js';
+
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
 const TIME_TO_DISPLAY_MESSAGE = 10000;
 const SUBMIT_DEBOUNCE_TIME = 500;
+const DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
 const Times = {
   TWELVE: '12:00',
   THIRTEEN: '13:00',
@@ -184,6 +190,11 @@ const setNoUiSliderValue = () => {
 const resetAllForms = () => {
   closeMapPopups();
   clearMap();
+  offerAvatarPreview.src = DEFAULT_AVATAR_SRC;
+  const offerImages = offerImagePreview.querySelectorAll('img');
+  for (const offerImage of offerImages) {
+    offerImage.remove();
+  }
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
