@@ -5,7 +5,7 @@ import {
   getErrorMessage,
 } from './create-dom-elements.js';
 
-import {adFormElement} from './form.js';
+import {adFormElement} from './form-state.js';
 
 import {sendData} from './api.js';
 
@@ -21,31 +21,25 @@ import {
   clearMap,
 } from './map-markers.js';
 
-const MIN_PRICE = 0;
-const MAX_PRICE = 100000;
-const MAX_ROOMS_AMOUNT = '100';
-const MIN_GUESTS_AMOUNT = '0';
-const TIME_TO_DISPLAY_MESSAGE = 10000;
-const SUBMIT_DEBOUNCE_TIME = 500;
-const Times = {
-  TWELVE: '12:00',
-  THIRTEEN: '13:00',
-  FOURTEEN: '14:00',
-};
-const FlatTypes = {
-  BUNGALOW: 'bungalow',
-  FLAT: 'flat',
-  HOTEL: 'hotel',
-  HOUSE: 'house',
-  PALACE: 'palace',
-};
-const FlatTypesPrice = {
-  BUNGALOW: '0',
-  FLAT: '1000',
-  HOTEL: '3000',
-  HOUSE: '5000',
-  PALACE: '10000',
-};
+import {
+  offerAvatarPreview,
+  offerImagePreview,
+} from './photo-preview.js';
+
+import {
+  MIN_PRICE,
+  MAX_PRICE,
+  MAX_ROOMS_AMOUNT,
+  MIN_GUESTS_AMOUNT,
+  TIME_TO_DISPLAY_MESSAGE,
+  SUBMIT_DEBOUNCE_TIME,
+  DEFAULT_AVATAR_SRC,
+  SEND_DATA_ADDRESS,
+  Times,
+  FlatTypes,
+  FlatTypesPrice,
+} from './values.js';
+
 const roomNumberElement = document.querySelector('#room_number');
 const capacityElement = document.querySelector('#capacity');
 const timeInElement = document.querySelector('#timein');
@@ -184,6 +178,11 @@ const setNoUiSliderValue = () => {
 const resetAllForms = () => {
   closeMapPopups();
   clearMap();
+  offerAvatarPreview.src = DEFAULT_AVATAR_SRC;
+  const offerImageElements = offerImagePreview.querySelectorAll('img');
+  for (const offerImage of offerImageElements) {
+    offerImage.remove();
+  }
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
@@ -196,7 +195,7 @@ const resetAllForms = () => {
 const handleSendData = debounce(
   (evt) => {
     const formData = new FormData(evt.target);
-    sendData('https://26.javascript.pages.academy/keksobooking', formData)
+    sendData(SEND_DATA_ADDRESS, formData)
       .then(() => {
         resetAllForms();
         setMapDefaultPosition();
@@ -205,8 +204,8 @@ const handleSendData = debounce(
         createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
       }).catch(() => {
         const message = getErrorMessage();
-        const errorButton = message.querySelector('.error__button');
-        errorButton.addEventListener('click', () => {
+        const errorButtonElement = message.querySelector('.error__button');
+        errorButtonElement.addEventListener('click', () => {
           message.remove();
         });
         document.body.append(message);
