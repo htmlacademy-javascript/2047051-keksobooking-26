@@ -1,13 +1,13 @@
-const Prices = {
-  lowSetPoint: 10000,
-  highSePoint: 50000,
-};
-const MAX_MARKERS_ON_MAP = 10;
-const housingType = document.querySelector('#housing-type');
-const housingPrice = document.querySelector('#housing-price');
-const housingGuests = document.querySelector('#housing-guests');
-const housingRooms = document.querySelector('#housing-rooms');
-const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
+import {
+  MAX_MARKERS_ON_MAP,
+  Prices,
+} from './values.js';
+
+const housingTypeElement = document.querySelector('#housing-type');
+const housingPriceElement = document.querySelector('#housing-price');
+const housingGuestsElement = document.querySelector('#housing-guests');
+const housingRoomsElement = document.querySelector('#housing-rooms');
+const housingFeatureElements = document.querySelector('#housing-features').querySelectorAll('input');
 
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
@@ -26,13 +26,13 @@ const testOfferFeatures = (offer) => {
   let hasFilteredFeatures = false;
   let countCheckedFeatures = 0;
   let countFeaturesInOffer = 0;
-  for (const featureCheckbox of housingFeatures) {
+  for (const featureCheckbox of housingFeatureElements) {
     if (featureCheckbox.checked) {
       hasFilteredFeatures = true;
     }
   }
   if (offer.offer.features) {
-    for (const featureCheckbox of housingFeatures) {
+    for (const featureCheckbox of housingFeatureElements) {
       if (featureCheckbox.checked) {
         countCheckedFeatures++;
         const value = featureCheckbox.value;
@@ -51,16 +51,16 @@ const testOfferFeatures = (offer) => {
   return false;
 };
 
-const testOfferType = (offer) => offer.offer.type === housingType.value || housingType.value === 'any';
+const testOfferType = (offer) => offer.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
 
-const testOfferRooms = (offer) => offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any';
+const testOfferRooms = (offer) => offer.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === 'any';
 
-const testOfferGuests = (offer) => offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any';
+const testOfferGuests = (offer) => offer.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === 'any';
 
 const showFilteredMarkers = (data, popupMaker, markerMaker) => {
   const filteredOffers = data.filter((offer) =>
     testOfferType(offer)
-    && testOfferPrice(housingPrice.value, offer.offer.price)
+    && testOfferPrice(housingPriceElement.value, offer.offer.price)
     && testOfferRooms(offer)
     && testOfferGuests(offer)
     && testOfferFeatures(offer));
