@@ -5,8 +5,6 @@ import {
   mapFiltersFormElement,
 } from './form.js';
 
-import {createPopupsInDom} from './create-dom-elements.js';
-
 import {
   showOffersLoadErrorMessage,
   debounce,
@@ -14,24 +12,18 @@ import {
 
 import {getData} from './api.js';
 
+import {createPopupsInDom} from './create-dom-elements.js';
+
+import {showFilteredMarkers} from './filter.js';
+
 deactivatePage();
 
 const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
-const MAX_MARKERS_ON_MAP = 10;
 const REFRESH_DEBOUNCE_TIME = 500;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
-const housingType = document.querySelector('#housing-type');
-const housingPrice = document.querySelector('#housing-price');
-const housingGuests = document.querySelector('#housing-guests');
-const housingRooms = document.querySelector('#housing-rooms');
-const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
-const Prices = {
-  lowSetPoint: 10000,
-  highSePoint: 50000,
-};
 
 const mainIcon = L.icon(
   {
@@ -100,74 +92,11 @@ const closeMapPopups = () => {
 
 const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
 
-const testOfferPrice =(relativePrice, actualPrice) => {
-  switch (relativePrice) {
-    case 'low':
-      return actualPrice < Prices.highSePoint ;
-    case 'middle':
-      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePoint;
-    case 'high':
-      return actualPrice > Prices.highSePoint;
-    default:
-      return true;
-  }
-};
-
-const testOfferFeatures = (offer) => {
-  let hasFilteredFeatures = false;
-  let countCheckedFeatures = 0;
-  let countFeaturesInOffer = 0;
-  for (const featureCheckbox of housingFeatures) {
-    if (featureCheckbox.checked) {
-      hasFilteredFeatures = true;
-    }
-  }
-  if (offer.offer.features) {
-    for (const featureCheckbox of housingFeatures) {
-      if (featureCheckbox.checked) {
-        countCheckedFeatures++;
-        const value = featureCheckbox.value;
-        if (offer.offer.features.includes(value)) {
-          countFeaturesInOffer++;
-        }
-      }
-    }
-  }
-  if (!offer.offer.features && hasFilteredFeatures) {
-    return false;
-  }
-  if (countCheckedFeatures===countFeaturesInOffer) {
-    return true;
-  }
-  return false;
-};
-
-const testOfferType = (offer) => offer.offer.type === housingType.value || housingType.value === 'any';
-
-const testOfferRooms = (offer) => offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any';
-
-const testOfferGuests = (offer) => offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any';
-
-const showFilteredMarkers = (data) => {
-  const filteredOffers = data.filter((offer) =>
-    testOfferType(offer)
-    && testOfferPrice(housingPrice.value, offer.offer.price)
-    && testOfferRooms(offer)
-    && testOfferGuests(offer)
-    && testOfferFeatures(offer));
-  const offerCards = createPopupsInDom(filteredOffers);
-  for (let i = 0; i < MAX_MARKERS_ON_MAP; i++) {
-    if (filteredOffers[i]) {
-      createCommonMarker(offerCards, filteredOffers[i], i);
-    }
-  }
-};
-
 map.on('load', dataFromServer);
 
 const showInitialMapMarkers = () => {
   dataFromServer.then((data) => {
-    showFilteredMarkers(data);
+    showFilteredMarkers(data,createPopupsInDom, createCommonMarker);
   }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
 };
 showInitialMapMarkers();
@@ -198,7 +127,7 @@ const refreshMarkersOnMap = debounce(
   () => {
     clearMap();
     dataFromServer.then((data) => {
-      showFilteredMarkers(data);
+      showFilteredMarkers(data,createPopupsInDom, createCommonMarker);
     }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
   },
   REFRESH_DEBOUNCE_TIME
