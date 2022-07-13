@@ -12,7 +12,7 @@ const housingFeatures = document.querySelector('#housing-features').querySelecto
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
-      return actualPrice < Prices.highSePoint ;
+      return actualPrice < Prices.lowSetPoint ;
     case 'middle':
       return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePoint;
     case 'high':

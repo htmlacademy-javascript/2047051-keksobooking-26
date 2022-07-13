@@ -9,3 +9,5 @@ import './validation.js';
 import './map-markers.js';
 
 import './api.js';
+
+import './filter.js';
