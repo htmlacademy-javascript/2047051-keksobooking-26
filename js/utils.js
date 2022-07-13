@@ -1,4 +1,4 @@
-const TIME_TO_DISPLAY_MAP_MESSAGE = 10000;
+import {TIME_TO_DISPLAY_MAP_MESSAGE} from './values.js';
 
 const getRussianTypesNames = (type) => {
   switch (type) {

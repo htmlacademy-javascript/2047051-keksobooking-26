@@ -3,7 +3,7 @@ import {
   activateMap,
   activateAdForm,
   mapFiltersFormElement,
-} from './form.js';
+} from './form-state.js';
 
 import {
   showOffersLoadErrorMessage,
@@ -16,31 +16,20 @@ import {createPopupsInDom} from './create-dom-elements.js';
 
 import {showFilteredMarkers} from './filter.js';
 
+import {
+  DEFAULT_LAT,
+  DEFAULT_LNG,
+  DEFAULT_MAP_ZOOM,
+  REFRESH_DEBOUNCE_TIME,
+  GET_DATA_ADDRESS,
+  MAIN_ICON,
+  COMMON_ICON,
+} from './values.js';
+
 deactivatePage();
 
-const DEFAULT_LAT = 35.68173;
-const DEFAULT_LNG = 139.75393;
-const DEFAULT_MAP_ZOOM = 13;
-const REFRESH_DEBOUNCE_TIME = 500;
-const GET_DATA_ADDRESS = 'https://26.javascript.pages.academy/keksobooking/data';
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
-
-const mainIcon = L.icon(
-  {
-    iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26,52],
-  }
-);
-
-const commonIcon = L.icon(
-  {
-    iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20,40],
-  }
-);
 
 const map = L.map('map-canvas');
 
@@ -58,7 +47,7 @@ const mainMarker = L.marker(
   },
   {
     draggable: true,
-    icon: mainIcon,
+    icon: MAIN_ICON,
   }
 );
 
@@ -77,7 +66,7 @@ const createCommonMarker = (parentElement, offer, index) => {
       lng,
     },
     {
-      icon: commonIcon,
+      icon: COMMON_ICON,
     }
   );
   marker
@@ -122,8 +111,6 @@ const setMapDefaultPosition = () => {
 
 const onResetButtonClick = setMapDefaultPosition;
 
-resetButtonElement.addEventListener('click', onResetButtonClick);
-
 const refreshMarkersOnMap = debounce(
   () => {
     clearMap();
@@ -134,6 +121,7 @@ const refreshMarkersOnMap = debounce(
   REFRESH_DEBOUNCE_TIME
 );
 
+resetButtonElement.addEventListener('click', onResetButtonClick);
 mapFiltersFormElement.addEventListener('change', refreshMarkersOnMap);
 
 export {

@@ -1,24 +1,24 @@
-const offerAvatarChooser = document.querySelector('#avatar');
-const offerAvatarPreview = document.querySelector('.ad-form-header__preview').querySelector('img');
-const offerImageChooser = document.querySelector('#images');
-const offerImagePreview = document.querySelector('.ad-form__photo');
+const offerAvatarChooserElement = document.querySelector('#avatar');
+const offerAvatarPreviewElement = document.querySelector('.ad-form-header__preview').querySelector('img');
+const offerImageChooserElement = document.querySelector('#images');
+const offerImagePreviewElement = document.querySelector('.ad-form__photo');
 
-offerAvatarChooser.addEventListener('change', () => {
-  const offerAvatar = offerAvatarChooser.files[0];
-  offerAvatarPreview.src = URL.createObjectURL(offerAvatar);
+offerAvatarChooserElement.addEventListener('change', () => {
+  const offerAvatar = offerAvatarChooserElement.files[0];
+  offerAvatarPreviewElement.src = URL.createObjectURL(offerAvatar);
 });
 
-offerImageChooser.addEventListener('change', () => {
+offerImageChooserElement.addEventListener('change', () => {
   const img = document.createElement('img');
   img.style.width = '40px';
   img.style.height = '44px';
   img.style.paddingLeft = '5px';
-  const offerImage = offerImageChooser.files[0];
+  const offerImage = offerImageChooserElement.files[0];
   img.src = URL.createObjectURL(offerImage);
-  offerImagePreview.append(img);
+  offerImagePreviewElement.append(img);
 });
 
 export {
-  offerAvatarPreview,
-  offerImagePreview,
+  offerAvatarPreviewElement as offerAvatarPreview,
+  offerImagePreviewElement as offerImagePreview,
 };
