@@ -16,12 +16,18 @@ deactivatePage();
 const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
+const MAX_MARKERS_ON_MAP = 10;
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
 const housingGuests = document.querySelector('#housing-guests');
 const housingRooms = document.querySelector('#housing-rooms');
+const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
+const Prices = {
+  lowSetPoint: 10000,
+  highSePpoint: 50000,
+};
 
 const mainIcon = L.icon(
   {
@@ -82,26 +88,26 @@ const createCommonMarker = (parentElement, offer, index) => {
     .bindPopup(parentElement.children[index]);
 };
 
+const clearMap = () => mainLayer.clearLayers();
+
 const closeMapPopups = () => {
   map.closePopup();
 };
 
 const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
 
-const getRelativePrice =(relativePrice, actualPrice) => {
+const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
-      return actualPrice < 1000 ;
+      return actualPrice < Prices.highSePpoint ;
     case 'middle':
-      return actualPrice >= 1000 && actualPrice <= 50000;
+      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePpoint;
     case 'high':
-      return actualPrice > 50000;
+      return actualPrice > Prices.highSePpoint;
     default:
       return true;
   }
 };
-
-const housingFeatures = document.querySelector('#housing-features').querySelectorAll('input');
 
 const testOfferFeatures = (offer) => {
   let hasFilteredFeatures = false;
@@ -122,7 +128,8 @@ const testOfferFeatures = (offer) => {
         }
       }
     }
-  } else if (!offer.offer.features && hasFilteredFeatures) {
+  }
+  if (!offer.offer.features && hasFilteredFeatures) {
     return false;
   }
   if (countCheckedFeatures===countFeaturesInOffer) {
@@ -131,21 +138,35 @@ const testOfferFeatures = (offer) => {
   return false;
 };
 
-const setFilteredMarkers = (data) => {
-  const filteredOffers = data.filter((offer) => (offer.offer.type === housingType.value || housingType.value === 'any') && getRelativePrice(housingPrice.value, (offer.offer.price) || housingPrice.value === 'any') && (offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any') && (offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any' && testOfferFeatures(offer)));
+const testOfferType = (offer) => offer.offer.type === housingType.value || housingType.value === 'any';
+
+const testOfferRooms = (offer) => offer.offer.rooms === Number(housingRooms.value) || housingRooms.value === 'any';
+
+const testOfferGuests = (offer) => offer.offer.guests === Number(housingGuests.value) || housingGuests.value === 'any';
+
+const showFilteredMarkers = (data) => {
+  const filteredOffers = data.filter((offer) =>
+    testOfferType(offer)
+    && testOfferPrice(housingPrice.value, offer.offer.price)
+    && testOfferRooms(offer)
+    && testOfferGuests(offer)
+    && testOfferFeatures(offer));
   const offerCards = createPopupsInDom(filteredOffers);
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < MAX_MARKERS_ON_MAP; i++) {
     if (filteredOffers[i]) {
       createCommonMarker(offerCards, filteredOffers[i], i);
     }
   }
 };
 
-dataFromServer.then((data) => {
-  setFilteredMarkers(data);
-}).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
-
 map.on('load', dataFromServer);
+
+const showInitialMapMarkers = () => {
+  dataFromServer.then((data) => {
+    showFilteredMarkers(data);
+  }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
+};
+showInitialMapMarkers();
 
 const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
@@ -169,15 +190,30 @@ const onResetButtonClick = setMapDefaultPosition;
 
 resetButtonElement.addEventListener('click', onResetButtonClick);
 
-mapFiltersFormElement.addEventListener('change', () => {
-  mainLayer.clearLayers();
-  dataFromServer.then((data) => {
-    setFilteredMarkers(data);
-  }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
-});
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+const refreshMarkersOnMap = debounce(
+  () => {
+    clearMap();
+    dataFromServer.then((data) => {
+      showFilteredMarkers(data);
+    }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
+  },
+  500
+);
+
+mapFiltersFormElement.addEventListener('change', refreshMarkersOnMap);
 
 export {
   createCommonMarker,
   closeMapPopups,
   setMapDefaultPosition,
+  showInitialMapMarkers,
+  clearMap,
 };

@@ -12,6 +12,8 @@ import {sendData} from './api.js';
 import {
   closeMapPopups,
   setMapDefaultPosition,
+  showInitialMapMarkers,
+  clearMap,
 } from './map-markers.js';
 
 const MIN_PRICE = 0;
@@ -174,12 +176,14 @@ const setNoUiSliderValue = () => {
 
 const resetAllForms = () => {
   closeMapPopups();
+  clearMap();
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
   for (const formElement of formElements) {
     formElement.reset();
   }
+  showInitialMapMarkers();
 };
 
 const sendOffersToServer = (evt) => {
