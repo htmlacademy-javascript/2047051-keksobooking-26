@@ -10,14 +10,23 @@ import {adFormElement} from './form.js';
 import {sendData} from './api.js';
 
 import {
+  createEventListeners,
+  debounce,
+} from './utils.js';
+
+import {
   closeMapPopups,
   setMapDefaultPosition,
+  showInitialMapMarkers,
+  clearMap,
 } from './map-markers.js';
 
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
+const TIME_TO_DISPLAY_MESSAGE = 10000;
+const SUBMIT_DEBOUNCE_TIME = 500;
 const Times = {
   TWELVE: '12:00',
   THIRTEEN: '13:00',
@@ -174,20 +183,43 @@ const setNoUiSliderValue = () => {
 
 const resetAllForms = () => {
   closeMapPopups();
+  clearMap();
   noUiSliderElement.noUiSlider.updateOptions({
     start: 0,
   });
   for (const formElement of formElements) {
     formElement.reset();
   }
+  showInitialMapMarkers();
 };
+
+const handleSendData = debounce(
+  (evt) => {
+    const formData = new FormData(evt.target);
+    sendData('https://26.javascript.pages.academy/keksobooking', formData)
+      .then(() => {
+        resetAllForms();
+        setMapDefaultPosition();
+        const message = getSuccessMessage();
+        document.body.append(message);
+        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+      }).catch(() => {
+        const message = getErrorMessage();
+        const errorButton = message.querySelector('.error__button');
+        errorButton.addEventListener('click', () => {
+          message.remove();
+        });
+        document.body.append(message);
+        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+      });
+  },
+  SUBMIT_DEBOUNCE_TIME);
 
 const sendOffersToServer = (evt) => {
   evt.preventDefault();
   const isValidForm = pristine.validate();
   if (isValidForm) {
-    const formData = new FormData(evt.target);
-    sendData('https://26.javascript.pages.academy/keksobooking',getSuccessMessage, getErrorMessage, formData, setMapDefaultPosition);
+    handleSendData(evt);
   }
 };
 
