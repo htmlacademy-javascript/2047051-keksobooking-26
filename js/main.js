@@ -11,3 +11,5 @@ import './map-markers.js';
 import './api.js';
 
 import './filter.js';
+
+import './photo-preview.js';
