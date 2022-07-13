@@ -22,6 +22,7 @@ const DEFAULT_LAT = 35.68173;
 const DEFAULT_LNG = 139.75393;
 const DEFAULT_MAP_ZOOM = 13;
 const REFRESH_DEBOUNCE_TIME = 500;
+const GET_DATA_ADDRESS = 'https://26.javascript.pages.academy/keksobooking/data';
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
 
@@ -90,7 +91,7 @@ const closeMapPopups = () => {
   map.closePopup();
 };
 
-const dataFromServer = getData('https://26.javascript.pages.academy/keksobooking/data', showOffersLoadErrorMessage);
+const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
 
 map.on('load', dataFromServer);
 
