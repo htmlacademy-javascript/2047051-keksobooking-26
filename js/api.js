@@ -1,8 +1,6 @@
 const getData = (address, errorMessageElement) => fetch(address)
   .then((response) => response.json())
-  .catch(() => {
-    errorMessageElement();
-  });
+  .catch(() => errorMessageElement());
 
 const sendData = (address, data) => fetch(address,
   {

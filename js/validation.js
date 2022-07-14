@@ -13,7 +13,7 @@ import {
 import {
   closeMapPopups,
   setMapDefaultPosition,
-  showInitialMapMarkers,
+  showMapMarkers,
   clearMap,
 } from './map-markers.js';
 
@@ -181,7 +181,7 @@ const resetAllForms = () => {
   for (const formElement of formElements) {
     formElement.reset();
   }
-  showInitialMapMarkers();
+  showMapMarkers();
 };
 
 const handleSendData = (evt) => {

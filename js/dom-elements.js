@@ -1,4 +1,3 @@
-
 const cardTemplateElement = document.querySelector('#card').content;
 const parentElement = cardTemplateElement.querySelector('.popup');
 const housingTypeElement = document.querySelector('#housing-type');

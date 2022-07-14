@@ -34,19 +34,14 @@ import {
 } from './dom-elements.js';
 
 deactivateAdForm();
-
 deactivateMap();
-
-const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
 
 const map = L.map('map-canvas');
 
-map.on('load', activateAdForm).setView({
-  lat: DEFAULT_LAT,
-  lng: DEFAULT_LNG,
-}, DEFAULT_MAP_ZOOM);
-
-map.on('load', dataFromServer);
+const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+});
 
 const mainLayer = L.layerGroup().addTo(map);
 
@@ -61,12 +56,16 @@ const mainMarker = L.marker(
   }
 );
 
-mainMarker.addTo(map);
-
-mainMarker.on('drag', (evt) => {
-  const {lat, lng} = evt.target.getLatLng();
-  addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-});
+const setMapDefaultPosition = () => {
+  map.setView({
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
+  }, DEFAULT_MAP_ZOOM);
+  mainMarker.setLatLng({
+    lat: DEFAULT_LAT,
+    lng: DEFAULT_LNG,
+  });
+};
 
 const createCommonMarker = (parentElement, offer, index) => {
   const {lat, lng} = offer.location;
@@ -86,55 +85,50 @@ const createCommonMarker = (parentElement, offer, index) => {
 
 const clearMap = () => mainLayer.clearLayers();
 
-const closeMapPopups = () => {
-  map.closePopup();
+const closeMapPopups = () => map.closePopup();
+
+const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
+const showMapMarkers = () => {
+  dataFromServer
+    .then((data) => showFilteredMarkers(data, createPopupsInDom, createCommonMarker))
+    .catch(() => showOffersLoadErrorMessage());
 };
-
-const showInitialMapMarkers = () => {
-  dataFromServer.then((data) => {
-    showFilteredMarkers(data, createPopupsInDom, createCommonMarker);
-  }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
-};
-
-showInitialMapMarkers();
-
-const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-});
-
-mapTiles.addTo(map);
-
-const setMapDefaultPosition = () => {
-  map.setView({
-    lat: DEFAULT_LAT,
-    lng: DEFAULT_LNG,
-  }, DEFAULT_MAP_ZOOM);
-  mainMarker.setLatLng({
-    lat: DEFAULT_LAT,
-    lng: DEFAULT_LNG,
-  });
-};
-
-const onResetButtonClick = setMapDefaultPosition;
 
 const refreshMarkersOnMap = setDebounce(
   () => {
     clearMap();
-    dataFromServer.then((data) => {
-      showFilteredMarkers(data,createPopupsInDom, createCommonMarker);
-    }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
+    showMapMarkers();
   },
   REFRESH_DEBOUNCE_TIME
 );
 
+const onResetButtonClick = setMapDefaultPosition;
+
+map.on('load', () => {
+  showMapMarkers();
+  activateMap();
+  activateAdForm();
+}).setView({
+  lat: DEFAULT_LAT,
+  lng: DEFAULT_LNG,
+}, DEFAULT_MAP_ZOOM);
+
+mainMarker.addTo(map);
+
+mapTiles.addTo(map);
+mainMarker.on('drag', (evt) => {
+  const {lat, lng} = evt.target.getLatLng();
+  addressElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+});
+
 resetButtonElement.addEventListener('click', onResetButtonClick);
+
 mapFiltersFormElement.addEventListener('change', refreshMarkersOnMap);
 
 export {
   createCommonMarker,
   closeMapPopups,
   setMapDefaultPosition,
-  showInitialMapMarkers,
+  showMapMarkers,
   clearMap,
 };
