@@ -11,6 +11,7 @@ const adFormInteractiveElements = adFormElement.querySelectorAll('select,input,t
 const mapFiltersFormElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = mapFiltersFormElement.querySelectorAll('select,input');
 const resetButtonElement = document.querySelector('.ad-form__reset');
+const submitButtonElement = document.querySelector('.ad-form__submit');
 const addressElement = document.querySelector('#address');
 const offerAvatarChooserElement = document.querySelector('#avatar');
 const offerAvatarPreviewElement = document.querySelector('.ad-form-header__preview').querySelector('img');
@@ -38,6 +39,7 @@ export {
   mapFiltersFormElement,
   mapFiltersInteractiveElements,
   resetButtonElement,
+  submitButtonElement,
   addressElement,
   offerAvatarChooserElement,
   offerAvatarPreviewElement,

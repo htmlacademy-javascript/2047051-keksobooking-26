@@ -14,7 +14,7 @@ import {getData} from './api.js';
 
 import {mapFiltersFormElement} from './dom-elements.js';
 
-import {createPopupsInDom} from './create-dom-elements.js';
+import {createPopupsInDom} from './create-popups.js';
 
 import {showFilteredMarkers} from './filter.js';
 
@@ -92,9 +92,10 @@ const closeMapPopups = () => {
 
 const showInitialMapMarkers = () => {
   dataFromServer.then((data) => {
-    showFilteredMarkers(data,createPopupsInDom, createCommonMarker);
+    showFilteredMarkers(data, createPopupsInDom, createCommonMarker);
   }).then(() => activateMap()).catch(() => showOffersLoadErrorMessage());
 };
+
 showInitialMapMarkers();
 
 const mapTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

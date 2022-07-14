@@ -8,7 +8,6 @@ import {
   getRoomEnding,
   getGuestEnding,
   createEventListeners,
-  setDebounce,
 } from './utils.js';
 
 import {
@@ -24,7 +23,6 @@ import {
   MAX_ROOMS_AMOUNT,
   MIN_GUESTS_AMOUNT,
   TIME_TO_DISPLAY_MESSAGE,
-  SUBMIT_DEBOUNCE_TIME,
   DEFAULT_AVATAR_SRC,
   SEND_DATA_ADDRESS,
   Times,
@@ -43,6 +41,7 @@ import {
   noUiSliderElement,
   formElements,
   resetButtonElement,
+  submitButtonElement,
   offerAvatarPreviewElement,
   offerImagePreviewElement,
 } from './dom-elements.js';
@@ -185,30 +184,31 @@ const resetAllForms = () => {
   showInitialMapMarkers();
 };
 
-const handleSendData = setDebounce(
-  (evt) => {
-    const formData = new FormData(evt.target);
-    sendData(SEND_DATA_ADDRESS, formData)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error (`${response.status} - ${response.statusText}`);
-        }
-        resetAllForms();
-        setMapDefaultPosition();
-        const message = getSuccessMessage();
-        document.body.append(message);
-        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
-      }).catch(() => {
-        const message = getErrorMessage();
-        const errorButtonElement = message.querySelector('.error__button');
-        errorButtonElement.addEventListener('click', () => {
-          message.remove();
-        });
-        document.body.append(message);
-        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+const handleSendData = (evt) => {
+  const formData = new FormData(evt.target);
+  submitButtonElement.disabled = true;
+  sendData(SEND_DATA_ADDRESS, formData)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error (`${response.status} - ${response.statusText}`);
+      }
+      resetAllForms();
+      setMapDefaultPosition();
+      const message = getSuccessMessage();
+      document.body.append(message);
+      createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+    }).catch(() => {
+      const message = getErrorMessage();
+      const errorButtonElement = message.querySelector('.error__button');
+      errorButtonElement.addEventListener('click', () => {
+        message.remove();
       });
-  },
-  SUBMIT_DEBOUNCE_TIME);
+      document.body.append(message);
+      createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+    }).finally(() => {
+      submitButtonElement.disabled = false;
+    });
+};
 
 const sendOffersToServer = (evt) => {
   evt.preventDefault();
