@@ -126,12 +126,7 @@ const getTypeMinPrice = () => {
   return priceElement.getAttribute('min');
 };
 
-const getPriceValidBool = () => {
-  if (Number(priceElement.value) < Number(getTypeMinPrice())) {
-    return false;
-  }
-  return true;
-};
+const getPriceValidBool = () => Number(priceElement.value) >= Number(getTypeMinPrice());
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
@@ -196,7 +191,10 @@ const handleSendData = debounce(
   (evt) => {
     const formData = new FormData(evt.target);
     sendData(SEND_DATA_ADDRESS, formData)
-      .then(() => {
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error (`${response.status} - ${response.statusText}`);
+        }
         resetAllForms();
         setMapDefaultPosition();
         const message = getSuccessMessage();

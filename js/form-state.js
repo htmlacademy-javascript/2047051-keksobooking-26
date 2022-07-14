@@ -35,18 +35,12 @@ const activateMap = () => {
   enableElement(mapFiltersFormElement);
 };
 
-const activatePage = () => {
-  activateAdForm();
-  activateMap();
-};
-
 export {
   deactivateAdForm,
   deactivateMap,
   deactivatePage,
   activateAdForm,
   activateMap,
-  activatePage,
   adFormElement,
   mapFiltersFormElement,
 };

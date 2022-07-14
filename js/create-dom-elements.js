@@ -12,17 +12,13 @@ const parentElement = cardTemplateElement.querySelector('.popup');
 const getSuccessMessage = () => {
   const successMessageTemplate = document.querySelector('#success').content;
   const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
-  const successMessageElement = successMessageTemplateElement.cloneNode(true);
-
-  return successMessageElement;
+  return successMessageTemplateElement.cloneNode(true);
 };
 
 const getErrorMessage = () => {
   const errorMessageTemplate = document.querySelector('#error').content;
   const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
-  const errorMessageElement = errorMessageTemplateElement.cloneNode(true);
-
-  return errorMessageElement;
+  return errorMessageTemplateElement.cloneNode(true);
 };
 
 const createPopupsInDom = (offers) => {

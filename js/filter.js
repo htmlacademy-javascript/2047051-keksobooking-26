@@ -45,10 +45,7 @@ const testOfferFeatures = (offer) => {
   if (!offer.offer.features && hasFilteredFeatures) {
     return false;
   }
-  if (countCheckedFeatures===countFeaturesInOffer) {
-    return true;
-  }
-  return false;
+  return countCheckedFeatures === countFeaturesInOffer;
 };
 
 const testOfferType = (offer) => offer.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
