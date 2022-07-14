@@ -3,15 +3,16 @@ import {
   deactivateMap,
   activateMap,
   activateAdForm,
-  mapFiltersFormElement,
 } from './form-state.js';
 
 import {
   showOffersLoadErrorMessage,
-  debounce,
+  setDebounce,
 } from './utils.js';
 
 import {getData} from './api.js';
+
+import {mapFiltersFormElement} from './dom-elements.js';
 
 import {createPopupsInDom} from './create-dom-elements.js';
 
@@ -27,12 +28,14 @@ import {
   COMMON_ICON,
 } from './values.js';
 
+import {
+  resetButtonElement,
+  addressElement,
+} from './dom-elements.js';
+
 deactivateAdForm();
 
 deactivateMap();
-
-const resetButtonElement = document.querySelector('.ad-form__reset');
-const addressElement = document.querySelector('#address');
 
 const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
 
@@ -114,7 +117,7 @@ const setMapDefaultPosition = () => {
 
 const onResetButtonClick = setMapDefaultPosition;
 
-const refreshMarkersOnMap = debounce(
+const refreshMarkersOnMap = setDebounce(
   () => {
     clearMap();
     dataFromServer.then((data) => {

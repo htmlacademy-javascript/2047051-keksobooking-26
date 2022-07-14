@@ -5,15 +5,18 @@ import {
   enableElement,
 } from './utils.js';
 
-const adFormElement = document.querySelector('.ad-form');
-const adFormInteractiveElements = adFormElement.querySelectorAll('select,input,textarea,button');
-const mapFiltersFormElement = document.querySelector('.map__filters');
-const mapFiltersInteractiveElements = mapFiltersFormElement.querySelectorAll('select,input');
-
+import {
+  adFormElement,
+  adFormInteractiveElements,
+  mapFiltersFormElement,
+  mapFiltersInteractiveElements,
+  noUiSliderElement,
+} from './dom-elements.js';
 
 const deactivateAdForm = () => {
   disableElements(adFormInteractiveElements);
   disableElement(adFormElement);
+  noUiSliderElement.setAttribute('disabled', true);
 };
 
 const deactivateMap = () => {
@@ -24,6 +27,7 @@ const deactivateMap = () => {
 const activateAdForm = () => {
   enableElements(adFormInteractiveElements);
   enableElement(adFormElement);
+  noUiSliderElement.removeAttribute('disabled');
 };
 
 const activateMap = () => {
@@ -36,6 +40,4 @@ export {
   deactivateMap,
   activateAdForm,
   activateMap,
-  adFormElement,
-  mapFiltersFormElement,
 };

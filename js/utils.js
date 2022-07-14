@@ -112,12 +112,24 @@ const createEventListeners = (message, delay) => {
   }, delay);
 };
 
-const debounce = (callback, timeoutDelay) => {
+const setDebounce = (callback, timeoutDelay) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
+};
+
+const getSuccessMessage = () => {
+  const successMessageTemplate = document.querySelector('#success').content;
+  const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
+  return successMessageTemplateElement.cloneNode(true);
+};
+
+const getErrorMessage = () => {
+  const errorMessageTemplate = document.querySelector('#error').content;
+  const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
+  return errorMessageTemplateElement.cloneNode(true);
 };
 
 export {
@@ -132,5 +144,7 @@ export {
   enableElement,
   showOffersLoadErrorMessage,
   createEventListeners,
-  debounce,
+  setDebounce,
+  getSuccessMessage,
+  getErrorMessage,
 };

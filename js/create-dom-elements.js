@@ -6,20 +6,7 @@ import {
   setPhotoSrc,
 } from './utils.js';
 
-const cardTemplateElement = document.querySelector('#card').content;
-const parentElement = cardTemplateElement.querySelector('.popup');
-
-const getSuccessMessage = () => {
-  const successMessageTemplate = document.querySelector('#success').content;
-  const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
-  return successMessageTemplateElement.cloneNode(true);
-};
-
-const getErrorMessage = () => {
-  const errorMessageTemplate = document.querySelector('#error').content;
-  const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
-  return errorMessageTemplateElement.cloneNode(true);
-};
+import {parentElement} from './dom-elements.js';
 
 const createPopupsInDom = (offers) => {
   const offersContainerElement = document.createElement('div');
@@ -120,8 +107,4 @@ const createPopupsInDom = (offers) => {
 
 export {
   createPopupsInDom,
-  getGuestEnding,
-  getRoomEnding,
-  getSuccessMessage,
-  getErrorMessage,
 };

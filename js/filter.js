@@ -3,11 +3,13 @@ import {
   Prices,
 } from './values.js';
 
-const housingTypeElement = document.querySelector('#housing-type');
-const housingPriceElement = document.querySelector('#housing-price');
-const housingGuestsElement = document.querySelector('#housing-guests');
-const housingRoomsElement = document.querySelector('#housing-rooms');
-const housingFeatureElements = document.querySelector('#housing-features').querySelectorAll('input');
+import {
+  housingTypeElement,
+  housingPriceElement,
+  housingGuestsElement,
+  housingRoomsElement,
+  housingFeatureElements,
+} from './dom-elements.js';
 
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {

@@ -1,17 +1,14 @@
-import {
-  getRoomEnding,
-  getGuestEnding,
-  getSuccessMessage,
-  getErrorMessage,
-} from './create-dom-elements.js';
-
-import {adFormElement} from './form-state.js';
+import {adFormElement} from './dom-elements.js';
 
 import {sendData} from './api.js';
 
 import {
+  getSuccessMessage,
+  getErrorMessage,
+  getRoomEnding,
+  getGuestEnding,
   createEventListeners,
-  debounce,
+  setDebounce,
 } from './utils.js';
 
 import {
@@ -20,11 +17,6 @@ import {
   showInitialMapMarkers,
   clearMap,
 } from './map-markers.js';
-
-import {
-  offerAvatarPreview,
-  offerImagePreview,
-} from './photo-preview.js';
 
 import {
   MIN_PRICE,
@@ -40,16 +32,21 @@ import {
   FlatTypesPrice,
 } from './values.js';
 
-const roomNumberElement = document.querySelector('#room_number');
-const capacityElement = document.querySelector('#capacity');
-const timeInElement = document.querySelector('#timein');
-const timeOutElement = document.querySelector('#timeout');
-const typeElement = document.querySelector('#type');
-const priceElement = document.querySelector('#price');
-const timeField = document.querySelector('.ad-form__element--time');
-const noUiSliderElement = document.querySelector('.ad-form__slider');
-const formElements = document.querySelectorAll('form');
-const resetButtonElement = adFormElement.querySelector('.ad-form__reset');
+import {
+  roomNumberElement,
+  capacityElement,
+  timeInElement,
+  timeOutElement,
+  typeElement,
+  priceElement,
+  timeField,
+  noUiSliderElement,
+  formElements,
+  resetButtonElement,
+  offerAvatarPreviewElement,
+  offerImagePreviewElement,
+} from './dom-elements.js';
+
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -132,7 +129,7 @@ const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()
 
 noUiSlider.create(noUiSliderElement, {
   range: {
-    min: Number(priceElement.getAttribute('value')),
+    min: Number(getTypeMinPrice()),
     max: MAX_PRICE,
   },
   start: MIN_PRICE,
@@ -173,8 +170,9 @@ const setNoUiSliderValue = () => {
 const resetAllForms = () => {
   closeMapPopups();
   clearMap();
-  offerAvatarPreview.src = DEFAULT_AVATAR_SRC;
-  const offerImageElements = offerImagePreview.querySelectorAll('img');
+  pristine.reset();
+  offerAvatarPreviewElement.src = DEFAULT_AVATAR_SRC;
+  const offerImageElements = offerImagePreviewElement.querySelectorAll('img');
   for (const offerImage of offerImageElements) {
     offerImage.remove();
   }
@@ -187,7 +185,7 @@ const resetAllForms = () => {
   showInitialMapMarkers();
 };
 
-const handleSendData = debounce(
+const handleSendData = setDebounce(
   (evt) => {
     const formData = new FormData(evt.target);
     sendData(SEND_DATA_ADDRESS, formData)

@@ -1,7 +1,9 @@
-const offerAvatarChooserElement = document.querySelector('#avatar');
-const offerAvatarPreviewElement = document.querySelector('.ad-form-header__preview').querySelector('img');
-const offerImageChooserElement = document.querySelector('#images');
-const offerImagePreviewElement = document.querySelector('.ad-form__photo');
+import {
+  offerAvatarChooserElement,
+  offerAvatarPreviewElement,
+  offerImageChooserElement,
+  offerImagePreviewElement,
+} from './dom-elements.js';
 
 offerAvatarChooserElement.addEventListener('change', () => {
   const offerAvatar = offerAvatarChooserElement.files[0];
@@ -17,8 +19,3 @@ offerImageChooserElement.addEventListener('change', () => {
   img.src = URL.createObjectURL(offerImage);
   offerImagePreviewElement.append(img);
 });
-
-export {
-  offerAvatarPreviewElement as offerAvatarPreview,
-  offerImagePreviewElement as offerImagePreview,
-};

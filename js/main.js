@@ -1,3 +1,5 @@
+import './dom-elements.js';
+
 import './values.js';
 
 import './utils.js';
