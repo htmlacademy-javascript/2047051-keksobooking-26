@@ -233,6 +233,10 @@ const onTypeElementChange = () => {
   setNoUiSliderOptions();
 };
 
+pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+
+pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
+
 adFormElement.addEventListener('submit', onSubmitButtonClick);
 
 resetButtonElement.addEventListener('click', onResetButtonClick);
@@ -243,8 +247,8 @@ priceElement.addEventListener('change', onPriceElementChange);
 
 timeField.addEventListener('change', onTimeFieldChange);
 
-pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+roomNumberElement.addEventListener('change', () => pristine.validate(capacityElement));
 
-pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
-
-export {resetAllForms};
+export {
+  resetAllForms,
+};

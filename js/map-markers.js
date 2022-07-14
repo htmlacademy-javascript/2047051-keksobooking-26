@@ -1,5 +1,6 @@
 import {
-  deactivatePage,
+  deactivateAdForm,
+  deactivateMap,
   activateMap,
   activateAdForm,
   mapFiltersFormElement,
@@ -26,10 +27,14 @@ import {
   COMMON_ICON,
 } from './values.js';
 
-deactivatePage();
+deactivateAdForm();
+
+deactivateMap();
 
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const addressElement = document.querySelector('#address');
+
+const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
 
 const map = L.map('map-canvas');
 
@@ -37,6 +42,8 @@ map.on('load', activateAdForm).setView({
   lat: DEFAULT_LAT,
   lng: DEFAULT_LNG,
 }, DEFAULT_MAP_ZOOM);
+
+map.on('load', dataFromServer);
 
 const mainLayer = L.layerGroup().addTo(map);
 
@@ -79,10 +86,6 @@ const clearMap = () => mainLayer.clearLayers();
 const closeMapPopups = () => {
   map.closePopup();
 };
-
-const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
-
-map.on('load', dataFromServer);
 
 const showInitialMapMarkers = () => {
   dataFromServer.then((data) => {
