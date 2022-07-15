@@ -12,6 +12,7 @@ const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
 const TIME_TO_DISPLAY_MESSAGE = 15000;
 const REFRESH_DEBOUNCE_TIME = 500;
+const IMAGE_FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAIN_ICON = L.icon(
   {
     iconUrl: './img/main-pin.svg',
@@ -65,6 +66,7 @@ export {
   TIME_TO_DISPLAY_MESSAGE,
   DEFAULT_AVATAR_SRC,
   SEND_DATA_ADDRESS,
+  IMAGE_FILE_TYPES,
   MAIN_ICON,
   COMMON_ICON,
   Times,

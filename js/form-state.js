@@ -16,7 +16,7 @@ import {
 const deactivateAdForm = () => {
   disableElements(adFormInteractiveElements);
   disableElement(adFormElement);
-  noUiSliderElement.setAttribute('disabled', true);
+  noUiSliderElement.setAttribute('disabled', 'true');
 };
 
 const deactivateMap = () => {
