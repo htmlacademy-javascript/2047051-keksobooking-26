@@ -89,6 +89,7 @@ const clearMap = () => mainLayer.clearLayers();
 const closeMapPopups = () => map.closePopup();
 
 const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
+
 const showMapMarkers = () => {
   dataFromServer
     .then((data) => showFilteredMarkers(data, createPopupsInDom, createCommonMarker))
