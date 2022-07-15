@@ -45,9 +45,9 @@ const FlatTypesPrice = {
   HOUSE: '5000',
   PALACE: '10000',
 };
-const Prices = {
-  lowSetPoint: 10000,
-  highSePoint: 50000,
+const PriceScale = {
+  LOW_SETPOINT: 10000,
+  HIGH_SETPOINT: 50000,
 };
 
 export {
@@ -70,5 +70,5 @@ export {
   Times,
   FlatTypes,
   FlatTypesPrice,
-  Prices,
+  PriceScale,
 };

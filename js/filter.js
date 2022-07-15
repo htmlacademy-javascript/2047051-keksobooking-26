@@ -1,6 +1,6 @@
 import {
   MAX_MARKERS_ON_MAP,
-  Prices,
+  PriceScale,
 } from './values.js';
 
 import {
@@ -14,11 +14,11 @@ import {
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
-      return actualPrice < Prices.lowSetPoint ;
+      return actualPrice < PriceScale.LOW_SETPOINT ;
     case 'middle':
-      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePoint;
+      return actualPrice >= PriceScale.LOW_SETPOINT && actualPrice <= PriceScale.HIGH_SETPOINT;
     case 'high':
-      return actualPrice > Prices.highSePoint;
+      return actualPrice > PriceScale.HIGH_SETPOINT;
     default:
       return true;
   }
