@@ -1,28 +1,30 @@
 import {
   MAX_MARKERS_ON_MAP,
-  Prices,
+  PriceScale,
 } from './values.js';
 
-const housingTypeElement = document.querySelector('#housing-type');
-const housingPriceElement = document.querySelector('#housing-price');
-const housingGuestsElement = document.querySelector('#housing-guests');
-const housingRoomsElement = document.querySelector('#housing-rooms');
-const housingFeatureElements = document.querySelector('#housing-features').querySelectorAll('input');
+import {
+  housingTypeElement,
+  housingPriceElement,
+  housingGuestsElement,
+  housingRoomsElement,
+  housingFeatureElements,
+} from './dom-elements.js';
 
 const testOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
-      return actualPrice < Prices.lowSetPoint ;
+      return actualPrice < PriceScale.LOW_SETPOINT ;
     case 'middle':
-      return actualPrice >= Prices.lowSetPoint && actualPrice <= Prices.highSePoint;
+      return actualPrice >= PriceScale.LOW_SETPOINT && actualPrice <= PriceScale.HIGH_SETPOINT;
     case 'high':
-      return actualPrice > Prices.highSePoint;
+      return actualPrice > PriceScale.HIGH_SETPOINT;
     default:
       return true;
   }
 };
 
-const testOfferFeatures = (offer) => {
+const testOfferFeatures = (offerPost) => {
   let hasFilteredFeatures = false;
   let countCheckedFeatures = 0;
   let countFeaturesInOffer = 0;
@@ -31,39 +33,36 @@ const testOfferFeatures = (offer) => {
       hasFilteredFeatures = true;
     }
   }
-  if (offer.offer.features) {
+  if (offerPost.offer.features) {
     for (const featureCheckbox of housingFeatureElements) {
       if (featureCheckbox.checked) {
         countCheckedFeatures++;
         const value = featureCheckbox.value;
-        if (offer.offer.features.includes(value)) {
+        if (offerPost.offer.features.includes(value)) {
           countFeaturesInOffer++;
         }
       }
     }
   }
-  if (!offer.offer.features && hasFilteredFeatures) {
+  if (!offerPost.offer.features && hasFilteredFeatures) {
     return false;
   }
-  if (countCheckedFeatures===countFeaturesInOffer) {
-    return true;
-  }
-  return false;
+  return countCheckedFeatures === countFeaturesInOffer;
 };
 
-const testOfferType = (offer) => offer.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
+const testOfferType = (offerPost) => offerPost.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
 
-const testOfferRooms = (offer) => offer.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === 'any';
+const testOfferRooms = (offerPost) => offerPost.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === 'any';
 
-const testOfferGuests = (offer) => offer.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === 'any';
+const testOfferGuests = (offerPost) => offerPost.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === 'any';
 
 const showFilteredMarkers = (data, popupMaker, markerMaker) => {
-  const filteredOffers = data.filter((offer) =>
-    testOfferType(offer)
-    && testOfferPrice(housingPriceElement.value, offer.offer.price)
-    && testOfferRooms(offer)
-    && testOfferGuests(offer)
-    && testOfferFeatures(offer));
+  const filteredOffers = data.filter((offerPost) =>
+    testOfferType(offerPost)
+    && testOfferPrice(housingPriceElement.value, offerPost.offer.price)
+    && testOfferRooms(offerPost)
+    && testOfferGuests(offerPost)
+    && testOfferFeatures(offerPost));
   const offerCards = popupMaker(filteredOffers);
   for (let i = 0; i < MAX_MARKERS_ON_MAP; i++) {
     if (filteredOffers[i]) {

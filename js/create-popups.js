@@ -6,28 +6,11 @@ import {
   setPhotoSrc,
 } from './utils.js';
 
-const cardTemplateElement = document.querySelector('#card').content;
-const parentElement = cardTemplateElement.querySelector('.popup');
+import {parentElement} from './dom-elements.js';
 
-const getSuccessMessage = () => {
-  const successMessageTemplate = document.querySelector('#success').content;
-  const successMessageTemplateElement = successMessageTemplate.querySelector('.success');
-  const successMessageElement = successMessageTemplateElement.cloneNode(true);
-
-  return successMessageElement;
-};
-
-const getErrorMessage = () => {
-  const errorMessageTemplate = document.querySelector('#error').content;
-  const errorMessageTemplateElement = errorMessageTemplate.querySelector('.error');
-  const errorMessageElement = errorMessageTemplateElement.cloneNode(true);
-
-  return errorMessageElement;
-};
-
-const createPopupsInDom = (offers) => {
+const createPopupsInDom = (offersData) => {
   const offersContainerElement = document.createElement('div');
-  offers.forEach((offerPost) => {
+  offersData.forEach((offerPost) => {
     const newOfferInDomElement = parentElement.cloneNode(true);
     const popupTitleElement = newOfferInDomElement.querySelector('.popup__title');
     const popupAddressElement = newOfferInDomElement.querySelector('.popup__text--address');
@@ -124,8 +107,4 @@ const createPopupsInDom = (offers) => {
 
 export {
   createPopupsInDom,
-  getGuestEnding,
-  getRoomEnding,
-  getSuccessMessage,
-  getErrorMessage,
 };

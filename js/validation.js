@@ -1,30 +1,21 @@
-import {
-  getRoomEnding,
-  getGuestEnding,
-  getSuccessMessage,
-  getErrorMessage,
-} from './create-dom-elements.js';
-
-import {adFormElement} from './form-state.js';
+import {adFormElement} from './dom-elements.js';
 
 import {sendData} from './api.js';
 
 import {
+  getSuccessMessage,
+  getErrorMessage,
+  getRoomEnding,
+  getGuestEnding,
   createEventListeners,
-  debounce,
 } from './utils.js';
 
 import {
   closeMapPopups,
   setMapDefaultPosition,
-  showInitialMapMarkers,
+  showMapMarkers,
   clearMap,
 } from './map-markers.js';
-
-import {
-  offerAvatarPreview,
-  offerImagePreview,
-} from './photo-preview.js';
 
 import {
   MIN_PRICE,
@@ -32,7 +23,6 @@ import {
   MAX_ROOMS_AMOUNT,
   MIN_GUESTS_AMOUNT,
   TIME_TO_DISPLAY_MESSAGE,
-  SUBMIT_DEBOUNCE_TIME,
   DEFAULT_AVATAR_SRC,
   SEND_DATA_ADDRESS,
   Times,
@@ -40,16 +30,22 @@ import {
   FlatTypesPrice,
 } from './values.js';
 
-const roomNumberElement = document.querySelector('#room_number');
-const capacityElement = document.querySelector('#capacity');
-const timeInElement = document.querySelector('#timein');
-const timeOutElement = document.querySelector('#timeout');
-const typeElement = document.querySelector('#type');
-const priceElement = document.querySelector('#price');
-const timeField = document.querySelector('.ad-form__element--time');
-const noUiSliderElement = document.querySelector('.ad-form__slider');
-const formElements = document.querySelectorAll('form');
-const resetButtonElement = adFormElement.querySelector('.ad-form__reset');
+import {
+  roomNumberElement,
+  capacityElement,
+  timeInElement,
+  timeOutElement,
+  typeElement,
+  priceElement,
+  timeField,
+  noUiSliderElement,
+  formElements,
+  resetButtonElement,
+  submitButtonElement,
+  offerAvatarPreviewElement,
+  offerImagePreviewElement,
+} from './dom-elements.js';
+
 let roomNumberElementValue = roomNumberElement.value;
 let capacityElementValue = capacityElement.value;
 
@@ -100,7 +96,7 @@ const syncTimeFields = (evt) => {
   }
 };
 
-const setAtributesMinPrice = (price) => {
+const setAttributesMinPrice = (price) => {
   priceElement.setAttribute('min', `${price}`);
   priceElement.setAttribute('placeholder', `от ${price}`);
 };
@@ -108,36 +104,31 @@ const setAtributesMinPrice = (price) => {
 const getTypeMinPrice = () => {
   switch (typeElement.value) {
     case FlatTypes.BUNGALOW:
-      setAtributesMinPrice(FlatTypesPrice.BUNGALOW);
+      setAttributesMinPrice(FlatTypesPrice.BUNGALOW);
       break;
     case FlatTypes.FLAT:
-      setAtributesMinPrice(FlatTypesPrice.FLAT);
+      setAttributesMinPrice(FlatTypesPrice.FLAT);
       break;
     case FlatTypes.HOTEL:
-      setAtributesMinPrice(FlatTypesPrice.HOTEL);
+      setAttributesMinPrice(FlatTypesPrice.HOTEL);
       break;
     case FlatTypes.HOUSE:
-      setAtributesMinPrice(FlatTypesPrice.HOUSE);
+      setAttributesMinPrice(FlatTypesPrice.HOUSE);
       break;
     case FlatTypes.PALACE:
-      setAtributesMinPrice(FlatTypesPrice.PALACE);
+      setAttributesMinPrice(FlatTypesPrice.PALACE);
       break;
   }
   return priceElement.getAttribute('min');
 };
 
-const getPriceValidBool = () => {
-  if (Number(priceElement.value) < Number(getTypeMinPrice())) {
-    return false;
-  }
-  return true;
-};
+const getPriceValidBool = () => Number(priceElement.value) >= Number(getTypeMinPrice());
 
 const validatePriceErrorMessage = () => `Не дешевле ${getTypeMinPrice()}`;
 
 noUiSlider.create(noUiSliderElement, {
   range: {
-    min: Number(priceElement.getAttribute('value')),
+    min: Number(getTypeMinPrice()),
     max: MAX_PRICE,
   },
   start: MIN_PRICE,
@@ -178,8 +169,9 @@ const setNoUiSliderValue = () => {
 const resetAllForms = () => {
   closeMapPopups();
   clearMap();
-  offerAvatarPreview.src = DEFAULT_AVATAR_SRC;
-  const offerImageElements = offerImagePreview.querySelectorAll('img');
+  pristine.reset();
+  offerAvatarPreviewElement.src = DEFAULT_AVATAR_SRC;
+  const offerImageElements = offerImagePreviewElement.querySelectorAll('img');
   for (const offerImage of offerImageElements) {
     offerImage.remove();
   }
@@ -189,30 +181,34 @@ const resetAllForms = () => {
   for (const formElement of formElements) {
     formElement.reset();
   }
-  showInitialMapMarkers();
+  showMapMarkers();
 };
 
-const handleSendData = debounce(
-  (evt) => {
-    const formData = new FormData(evt.target);
-    sendData(SEND_DATA_ADDRESS, formData)
-      .then(() => {
-        resetAllForms();
-        setMapDefaultPosition();
-        const message = getSuccessMessage();
-        document.body.append(message);
-        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
-      }).catch(() => {
-        const message = getErrorMessage();
-        const errorButtonElement = message.querySelector('.error__button');
-        errorButtonElement.addEventListener('click', () => {
-          message.remove();
-        });
-        document.body.append(message);
-        createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+const handleSendData = (evt) => {
+  const formData = new FormData(evt.target);
+  submitButtonElement.disabled = true;
+  sendData(SEND_DATA_ADDRESS, formData)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error (`${response.status} - ${response.statusText}`);
+      }
+      resetAllForms();
+      setMapDefaultPosition();
+      const message = getSuccessMessage();
+      document.body.append(message);
+      createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+    }).catch(() => {
+      const message = getErrorMessage();
+      const errorButtonElement = message.querySelector('.error__button');
+      errorButtonElement.addEventListener('click', () => {
+        message.remove();
       });
-  },
-  SUBMIT_DEBOUNCE_TIME);
+      document.body.append(message);
+      createEventListeners(message, TIME_TO_DISPLAY_MESSAGE);
+    }).finally(() => {
+      submitButtonElement.disabled = false;
+    });
+};
 
 const sendOffersToServer = (evt) => {
   evt.preventDefault();
@@ -235,6 +231,10 @@ const onTypeElementChange = () => {
   setNoUiSliderOptions();
 };
 
+pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+
+pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
+
 adFormElement.addEventListener('submit', onSubmitButtonClick);
 
 resetButtonElement.addEventListener('click', onResetButtonClick);
@@ -245,8 +245,8 @@ priceElement.addEventListener('change', onPriceElementChange);
 
 timeField.addEventListener('change', onTimeFieldChange);
 
-pristine.addValidator(capacityElement, getRoomsValidBool, validateRoomsErrorMessage);
+roomNumberElement.addEventListener('change', () => pristine.validate(capacityElement));
 
-pristine.addValidator(priceElement, getPriceValidBool, validatePriceErrorMessage);
-
-export {resetAllForms};
+export {
+  resetAllForms,
+};

@@ -10,9 +10,8 @@ const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 const MAX_ROOMS_AMOUNT = '100';
 const MIN_GUESTS_AMOUNT = '0';
-const TIME_TO_DISPLAY_MESSAGE = 10000;
+const TIME_TO_DISPLAY_MESSAGE = 15000;
 const REFRESH_DEBOUNCE_TIME = 500;
-const SUBMIT_DEBOUNCE_TIME = 500;
 const MAIN_ICON = L.icon(
   {
     iconUrl: './img/main-pin.svg',
@@ -46,9 +45,9 @@ const FlatTypesPrice = {
   HOUSE: '5000',
   PALACE: '10000',
 };
-const Prices = {
-  lowSetPoint: 10000,
-  highSePoint: 50000,
+const PriceScale = {
+  LOW_SETPOINT: 10000,
+  HIGH_SETPOINT: 50000,
 };
 
 export {
@@ -64,7 +63,6 @@ export {
   MAX_ROOMS_AMOUNT,
   MIN_GUESTS_AMOUNT,
   TIME_TO_DISPLAY_MESSAGE,
-  SUBMIT_DEBOUNCE_TIME,
   DEFAULT_AVATAR_SRC,
   SEND_DATA_ADDRESS,
   MAIN_ICON,
@@ -72,5 +70,5 @@ export {
   Times,
   FlatTypes,
   FlatTypesPrice,
-  Prices,
+  PriceScale,
 };
