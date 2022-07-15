@@ -8,9 +8,9 @@ import {
 
 import {parentElement} from './dom-elements.js';
 
-const createPopupsInDom = (offers) => {
+const createPopupsInDom = (offersData) => {
   const offersContainerElement = document.createElement('div');
-  offers.forEach((offerPost) => {
+  offersData.forEach((offerPost) => {
     const newOfferInDomElement = parentElement.cloneNode(true);
     const popupTitleElement = newOfferInDomElement.querySelector('.popup__title');
     const popupAddressElement = newOfferInDomElement.querySelector('.popup__text--address');
