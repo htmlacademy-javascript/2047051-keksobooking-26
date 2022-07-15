@@ -11,7 +11,7 @@ import {
   housingFeatureElements,
 } from './dom-elements.js';
 
-const testOfferPrice =(relativePrice, actualPrice) => {
+const filterOfferPrice =(relativePrice, actualPrice) => {
   switch (relativePrice) {
     case 'low':
       return actualPrice < PriceScale.LOW_SETPOINT ;
@@ -24,7 +24,7 @@ const testOfferPrice =(relativePrice, actualPrice) => {
   }
 };
 
-const testOfferFeatures = (offerPost) => {
+const filterOfferFeatures = (offerPost) => {
   let hasFilteredFeatures = false;
   let countCheckedFeatures = 0;
   let countFeaturesInOffer = 0;
@@ -50,19 +50,19 @@ const testOfferFeatures = (offerPost) => {
   return countCheckedFeatures === countFeaturesInOffer;
 };
 
-const testOfferType = (offerPost) => offerPost.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
+const filterOfferType = (offerPost) => offerPost.offer.type === housingTypeElement.value || housingTypeElement.value === 'any';
 
-const testOfferRooms = (offerPost) => offerPost.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === 'any';
+const filterOfferRooms = (offerPost) => offerPost.offer.rooms === Number(housingRoomsElement.value) || housingRoomsElement.value === 'any';
 
-const testOfferGuests = (offerPost) => offerPost.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === 'any';
+const filterOfferGuests = (offerPost) => offerPost.offer.guests === Number(housingGuestsElement.value) || housingGuestsElement.value === 'any';
 
 const showFilteredMarkers = (data, popupMaker, markerMaker) => {
   const filteredOffers = data.filter((offerPost) =>
-    testOfferType(offerPost)
-    && testOfferPrice(housingPriceElement.value, offerPost.offer.price)
-    && testOfferRooms(offerPost)
-    && testOfferGuests(offerPost)
-    && testOfferFeatures(offerPost));
+    filterOfferType(offerPost)
+    && filterOfferPrice(housingPriceElement.value, offerPost.offer.price)
+    && filterOfferRooms(offerPost)
+    && filterOfferGuests(offerPost)
+    && filterOfferFeatures(offerPost));
   const offerCards = popupMaker(filteredOffers);
   for (let i = 0; i < MAX_MARKERS_ON_MAP; i++) {
     if (filteredOffers[i]) {

@@ -1049,3 +1049,9 @@ fieldset {
   padding: 1px 0 0 2px;
   color: red;
 }
+
+.offer__image {
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+}

@@ -62,10 +62,8 @@ const getRoomsValidBool = () => {
   capacityElementValue = capacityElement.value;
   if (Number(roomNumberElementValue) >= Number(capacityElementValue) && roomNumberElementValue !== MAX_ROOMS_AMOUNT && capacityElementValue !== MIN_GUESTS_AMOUNT) {
     return true;
-  } else if(roomNumberElementValue === MAX_ROOMS_AMOUNT && capacityElementValue === MIN_GUESTS_AMOUNT) {
-    return true;
   } else {
-    return false;
+    return roomNumberElementValue === MAX_ROOMS_AMOUNT && capacityElementValue === MIN_GUESTS_AMOUNT;
   }
 };
 
