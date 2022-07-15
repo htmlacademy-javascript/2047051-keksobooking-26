@@ -96,7 +96,7 @@ const syncTimeFields = (evt) => {
   }
 };
 
-const setAtributesMinPrice = (price) => {
+const setAttributesMinPrice = (price) => {
   priceElement.setAttribute('min', `${price}`);
   priceElement.setAttribute('placeholder', `от ${price}`);
 };
@@ -104,19 +104,19 @@ const setAtributesMinPrice = (price) => {
 const getTypeMinPrice = () => {
   switch (typeElement.value) {
     case FlatTypes.BUNGALOW:
-      setAtributesMinPrice(FlatTypesPrice.BUNGALOW);
+      setAttributesMinPrice(FlatTypesPrice.BUNGALOW);
       break;
     case FlatTypes.FLAT:
-      setAtributesMinPrice(FlatTypesPrice.FLAT);
+      setAttributesMinPrice(FlatTypesPrice.FLAT);
       break;
     case FlatTypes.HOTEL:
-      setAtributesMinPrice(FlatTypesPrice.HOTEL);
+      setAttributesMinPrice(FlatTypesPrice.HOTEL);
       break;
     case FlatTypes.HOUSE:
-      setAtributesMinPrice(FlatTypesPrice.HOUSE);
+      setAttributesMinPrice(FlatTypesPrice.HOUSE);
       break;
     case FlatTypes.PALACE:
-      setAtributesMinPrice(FlatTypesPrice.PALACE);
+      setAttributesMinPrice(FlatTypesPrice.PALACE);
       break;
   }
   return priceElement.getAttribute('min');
