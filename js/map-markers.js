@@ -34,6 +34,7 @@ import {
 } from './dom-elements.js';
 
 deactivateAdForm();
+
 deactivateMap();
 
 const map = L.map('map-canvas');
@@ -91,6 +92,7 @@ const dataFromServer = getData(GET_DATA_ADDRESS, showOffersLoadErrorMessage);
 const showMapMarkers = () => {
   dataFromServer
     .then((data) => showFilteredMarkers(data, createPopupsInDom, createCommonMarker))
+    .then(() => activateMap())
     .catch(() => showOffersLoadErrorMessage());
 };
 
@@ -106,7 +108,6 @@ const onResetButtonClick = setMapDefaultPosition;
 
 map.on('load', () => {
   showMapMarkers();
-  activateMap();
   activateAdForm();
 }).setView({
   lat: DEFAULT_LAT,
